@@ -1,0 +1,11 @@
+{
+  "version": "1.0.1",
+  "build": 4,
+  "releaseDate": "2026-10-21",
+  "title": "OpenMoney v1.0.1",
+  "notes": "Atualização do OpenMoney v1.0.1 (Build 4) com rotina de atualização automática e melhorias gerais.",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.1.zip",
+  "latestDownloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.1",
+  "sha256": "0ec6ddd121263bd7b5bda281195f1662048927a86c733fd2878ec650e2cb6422"
+}
