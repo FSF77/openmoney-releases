@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.12** (Build 13)
-> *Publicada em: 21/10/2026 às 19:11*
+## ⚡ Última Versão Disponível: **v1.0.13** (Build 14)
+> *Publicada em: 21/10/2026 às 19:14*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.12.zip** | Pacote oficial v1.0.12 para macOS | [📥 Download v1.0.12](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.12.zip) | ~3 MB |
+| **OpenMoney-1.0.13.zip** | Pacote oficial v1.0.13 para macOS | [📥 Download v1.0.13](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.13.zip) | ~3 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-b8b2dd6432a6e910054782de82aef312c7f366a1ce773b79d8f4b198eba83958  OpenMoney-1.0.12.zip
+67ab9af8d188263f45a4e4d0617e10a59dc4f08b3ed3b874c9d1ddb596536d80  OpenMoney-1.0.13.zip
 ```
 
 ### 📝 Notas desta Versão
-Correção da instalação automática de atualizações (arquivo temporário do download).
+Pacote oficial para macOS
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.12.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.12.zip).
+1. Baixe o pacote [OpenMoney-1.0.13.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.13.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*

@@ -1,10 +1,10 @@
 {
-  "version": "1.0.12",
-  "build": 13,
+  "version": "1.0.13",
+  "build": 14,
   "releaseDate": "2026-10-21",
-  "title": "OpenMoney v1.0.12",
-  "notes": "Correção da instalação automática de atualizações (arquivo temporário do download).",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.12.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.12",
-  "sha256": "b8b2dd6432a6e910054782de82aef312c7f366a1ce773b79d8f4b198eba83958"
+  "title": "OpenMoney v1.0.13",
+  "notes": "Pacote oficial para macOS",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.13.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.13",
+  "sha256": "67ab9af8d188263f45a4e4d0617e10a59dc4f08b3ed3b874c9d1ddb596536d80"
 }
