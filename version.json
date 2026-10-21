@@ -1,10 +1,10 @@
 {
-  "version": "1.0.14",
-  "build": 15,
+  "version": "1.0.15",
+  "build": 17,
   "releaseDate": "2026-10-21",
-  "title": "OpenMoney v1.0.14",
-  "notes": "Correção: o app agora fecha e reabre sozinho após instalar a atualização.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.14.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.14",
-  "sha256": "c7777fb7af8b422bcc58bbc8aa1dc40a2823d86f59e8618a5fd6b5c4c2d422eb"
+  "title": "OpenMoney v1.0.15",
+  "notes": "Pacote oficial para macOS com atualização automática",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.15.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.15",
+  "sha256": "6e8715cdb5f9dbd51e1806316523181fa2e545cc7006aa700d690fc0f8316c9f"
 }
