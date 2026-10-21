@@ -1,11 +1,11 @@
 {
-  "version": "1.0.5",
-  "build": 5,
+  "version": "1.0.10",
+  "build": 6,
   "releaseDate": "2026-10-21",
-  "title": "OpenMoney v1.0.5",
-  "notes": ";Adicionado melhorias de performance",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.5.zip",
+  "title": "OpenMoney v1.0.10",
+  "notes": ";Adicionado pequenas melhorias",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.10.zip",
   "latestDownloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.5",
-  "sha256": "3f450350f2bcc2b4efe8a7db8c58d1a7e64f307ca6ea37ae0627fd4d55ac49cd"
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.10",
+  "sha256": "75fc868d39a223e7e6d0fb26db40b66498118f35245970468ad3591c89811268"
 }

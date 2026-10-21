@@ -4,22 +4,22 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.5** (Build 5)
-> *Publicada em: 21/10/2026 às 18:26*
+## ⚡ Última Versão Disponível: **v1.0.10** (Build 6)
+> *Publicada em: 21/10/2026 às 18:32*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
 | **OpenMoney.zip** | Versão mais recente para macOS (Apple Silicon & Intel) | [📥 Download](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney.zip) | ~3 MB |
-| **OpenMoney-1.0.5.zip** | Pacote específico da versão v1.0.5 | [📦 Download](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.5.zip) | ~3 MB |
+| **OpenMoney-1.0.10.zip** | Pacote específico da versão v1.0.10 | [📦 Download](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.10.zip) | ~3 MB |
 | **version.json** | Feed de verificação automática do app | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-3f450350f2bcc2b4efe8a7db8c58d1a7e64f307ca6ea37ae0627fd4d55ac49cd  OpenMoney-1.0.5.zip
+75fc868d39a223e7e6d0fb26db40b66498118f35245970468ad3591c89811268  OpenMoney-1.0.10.zip
 ```
 
 ### 📝 Notas desta Versão
-;Adicionado melhorias de performance
+;Adicionado pequenas melhorias
 
 ---
 
