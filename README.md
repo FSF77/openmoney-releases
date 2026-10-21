@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.12** (Build 11)
-> *Publicada em: 21/10/2026 às 19:05*
+## ⚡ Última Versão Disponível: **v1.0.12** (Build 13)
+> *Publicada em: 21/10/2026 às 19:11*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-948989da92f34ea1a6685021e7fe50f6d60efa86c863c3bf87804e0da3072f38  OpenMoney-1.0.12.zip
+b8b2dd6432a6e910054782de82aef312c7f366a1ce773b79d8f4b198eba83958  OpenMoney-1.0.12.zip
 ```
 
 ### 📝 Notas desta Versão
-Pacote oficial v1.0.12 para macOS
+Correção da instalação automática de atualizações (arquivo temporário do download).
 
 ---
 
