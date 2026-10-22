@@ -1,10 +1,10 @@
 {
-  "version": "1.0.17",
-  "build": 19,
+  "version": "1.0.18",
+  "build": 21,
   "releaseDate": "2026-10-22",
-  "title": "OpenMoney v1.0.17",
-  "notes": "Pacote oficial para macOS com atualização automática, melhoria tela de contas, permitir favoritar uma conta",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.17.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.17",
-  "sha256": "5b35bac66ae86ec69b20a83228b9966f2eabb86858af46940b17d366ecf64666"
+  "title": "OpenMoney v1.0.18",
+  "notes": "Pacote oficial para macOS com atualização automática, melhoria tela de contas, permitir favoritar uma conta, abatimento de previsões",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.18.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.18",
+  "sha256": "716d4a87d223af5d62c1071ea633ae85464be94d379de787f48c2b897e34256f"
 }
