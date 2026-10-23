@@ -1,10 +1,10 @@
 {
-  "version": "1.0.23",
-  "build": 28,
+  "version": "1.0.24",
+  "build": 30,
   "releaseDate": "2026-10-23",
-  "title": "OpenMoney v1.0.23",
-  "notes": "Atualização do OpenMoney v1.0.23 (Build 28) com correções e melhorias gerais.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.23.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.23",
-  "sha256": "e700ace560002aba1205944b4929a1a8dcb76a158f269b7e6f1e2c3e31c5ccf7"
+  "title": "OpenMoney v1.0.24",
+  "notes": "Adiciona funcionalidade de copiar lançamento com pré-preenchimento inteligente, suporte a alteração de conta, modo recorrente/parcelado e data atual.",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.24.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.24",
+  "sha256": "f96804df915a9e5d559bfea497ef99d8714a3015d5a6a8f1801738c690be6901"
 }
