@@ -1,10 +1,10 @@
 {
-  "version": "1.0.20",
-  "build": 24,
-  "releaseDate": "2026-10-22",
-  "title": "OpenMoney v1.0.20",
-  "notes": "Remoção do menu Lançamentos redundante e consolidação de ações nos menus Arquivo e Planejamento.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.20.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.20",
-  "sha256": "7c5b3f9afe13e69bfd1412a9f84997d7116f3d65a7d5c7abad6c0df06da11481"
+  "version": "1.0.21",
+  "build": 25,
+  "releaseDate": "2026-10-23",
+  "title": "OpenMoney v1.0.21",
+  "notes": "Suporte a lançamentos recorrentes por tempo indeterminado ou com data de término programada, projeção plurianual de 5 anos para recorrência anual e sincronização dinâmica ao navegar no calendário.",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.21.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.21",
+  "sha256": "09f86f06bbad84b62b7809a1fb37405fc8021fcfd8c7397524597b149712a2e5"
 }
