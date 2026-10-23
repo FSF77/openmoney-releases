@@ -1,10 +1,10 @@
 {
-  "version": "1.0.21",
-  "build": 25,
+  "version": "1.0.22",
+  "build": 26,
   "releaseDate": "2026-10-23",
-  "title": "OpenMoney v1.0.21",
-  "notes": "Suporte a lançamentos recorrentes por tempo indeterminado ou com data de término programada, projeção plurianual de 5 anos para recorrência anual e sincronização dinâmica ao navegar no calendário.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.21.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.21",
-  "sha256": "09f86f06bbad84b62b7809a1fb37405fc8021fcfd8c7397524597b149712a2e5"
+  "title": "OpenMoney v1.0.22",
+  "notes": "Suporte completo a transferências recorrentes entre contas (com tempo indeterminado ou data de término, projeção adaptativa e sincronização atômica das duas pontas).",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.22.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.22",
+  "sha256": "4c956e0ea2e0843cf174c737664c4d95ce9765ba8624226e32b782ef75ee364f"
 }

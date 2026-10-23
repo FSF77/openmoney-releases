@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.21** (Build 25)
-> *Publicada em: 23/10/2026 às 11:26*
+## ⚡ Última Versão Disponível: **v1.0.22** (Build 26)
+> *Publicada em: 23/10/2026 às 12:04*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.21.zip** | Pacote oficial v1.0.21 para macOS | [📥 Download v1.0.21](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.21.zip) | ~3 MB |
+| **OpenMoney-1.0.22.zip** | Pacote oficial v1.0.22 para macOS | [📥 Download v1.0.22](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.22.zip) | ~3 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-09f86f06bbad84b62b7809a1fb37405fc8021fcfd8c7397524597b149712a2e5  OpenMoney-1.0.21.zip
+4c956e0ea2e0843cf174c737664c4d95ce9765ba8624226e32b782ef75ee364f  OpenMoney-1.0.22.zip
 ```
 
 ### 📝 Notas desta Versão
-Suporte a lançamentos recorrentes por tempo indeterminado ou com data de término programada, projeção plurianual de 5 anos para recorrência anual e sincronização dinâmica ao navegar no calendário.
+Suporte completo a transferências recorrentes entre contas (com tempo indeterminado ou data de término, projeção adaptativa e sincronização atômica das duas pontas).
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.21.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.21.zip).
+1. Baixe o pacote [OpenMoney-1.0.22.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.22.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
