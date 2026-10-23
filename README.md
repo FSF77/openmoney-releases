@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.19** (Build 23)
-> *Publicada em: 22/10/2026 às 22:04*
+## ⚡ Última Versão Disponível: **v1.0.20** (Build 24)
+> *Publicada em: 22/10/2026 às 22:12*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.19.zip** | Pacote oficial v1.0.19 para macOS | [📥 Download v1.0.19](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.19.zip) | ~3 MB |
+| **OpenMoney-1.0.20.zip** | Pacote oficial v1.0.20 para macOS | [📥 Download v1.0.20](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.20.zip) | ~3 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-c196777f58e8b15f312db1a01b93cc211dfd2215eb9a0d121b5db8543b524c0a  OpenMoney-1.0.19.zip
+7c5b3f9afe13e69bfd1412a9f84997d7116f3d65a7d5c7abad6c0df06da11481  OpenMoney-1.0.20.zip
 ```
 
 ### 📝 Notas desta Versão
-Correção da tela de conclusão na importação CSV, limpeza do menu Lançamentos e migração de 'Pesquisar em Toda a Base' para Planejamento.
+Remoção do menu Lançamentos redundante e consolidação de ações nos menus Arquivo e Planejamento.
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.19.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.19.zip).
+1. Baixe o pacote [OpenMoney-1.0.20.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.20.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
