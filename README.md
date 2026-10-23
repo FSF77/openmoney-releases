@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.18** (Build 21)
-> *Publicada em: 22/10/2026 às 16:33*
+## ⚡ Última Versão Disponível: **v1.0.19** (Build 23)
+> *Publicada em: 22/10/2026 às 22:04*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.18.zip** | Pacote oficial v1.0.18 para macOS | [📥 Download v1.0.18](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.18.zip) | ~3 MB |
+| **OpenMoney-1.0.19.zip** | Pacote oficial v1.0.19 para macOS | [📥 Download v1.0.19](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.19.zip) | ~3 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-716d4a87d223af5d62c1071ea633ae85464be94d379de787f48c2b897e34256f  OpenMoney-1.0.18.zip
+c196777f58e8b15f312db1a01b93cc211dfd2215eb9a0d121b5db8543b524c0a  OpenMoney-1.0.19.zip
 ```
 
 ### 📝 Notas desta Versão
-Pacote oficial para macOS com atualização automática, melhoria tela de contas, permitir favoritar uma conta, abatimento de previsões
+Correção da tela de conclusão na importação CSV, limpeza do menu Lançamentos e migração de 'Pesquisar em Toda a Base' para Planejamento.
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.18.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.18.zip).
+1. Baixe o pacote [OpenMoney-1.0.19.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.19.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
