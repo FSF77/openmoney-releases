@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.27** (Build 41)
-> *Publicada em: 24/10/2026 às 20:02*
+## ⚡ Última Versão Disponível: **v1.0.27** (Build 42)
+> *Publicada em: 24/10/2026 às 20:36*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-850d724625d6420bea120e8bd37699094eaf93c25ede8412566023685605f9e0  OpenMoney-1.0.27.zip
+9b622dc97ebea5f4e3ae5cb2067ac2276763444265bbdcd6f9b29f1b3c28f56e  OpenMoney-1.0.27.zip
 ```
 
 ### 📝 Notas desta Versão
-Ajustes finos de layout na Central de Contas a Pagar e Receber: correção do rótulo Tipo e largura da coluna de data.
+Compatibilidade com compilação para iOS/iPadOS (ajuste de métodos de backup e restauração multiplataforma).
 
 ---
 
