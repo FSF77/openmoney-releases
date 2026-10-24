@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.27** (Build 42)
-> *Publicada em: 24/10/2026 às 20:36*
+## ⚡ Última Versão Disponível: **v1.0.27** (Build 43)
+> *Publicada em: 24/10/2026 às 20:50*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-9b622dc97ebea5f4e3ae5cb2067ac2276763444265bbdcd6f9b29f1b3c28f56e  OpenMoney-1.0.27.zip
+472f07fb639879320724a9c64454819597ae1845bdb510dd792341867cdd965f  OpenMoney-1.0.27.zip
 ```
 
 ### 📝 Notas desta Versão
-Compatibilidade com compilação para iOS/iPadOS (ajuste de métodos de backup e restauração multiplataforma).
+Atualização completa do README.md e sincronização do manual integrado de ajuda v1.0.27.
 
 ---
 

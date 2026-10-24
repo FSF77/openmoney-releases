@@ -1,10 +1,10 @@
 {
   "version": "1.0.27",
-  "build": 42,
+  "build": 43,
   "releaseDate": "2026-10-24",
   "title": "OpenMoney v1.0.27",
-  "notes": "Correção de compatibilidade multiplataforma iOS/macOS para métodos de backup e restauração",
+  "notes": "Atualização da documentação no README.md e sincronização com o manual integrado do aplicativo",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.27.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.27",
-  "sha256": "9b622dc97ebea5f4e3ae5cb2067ac2276763444265bbdcd6f9b29f1b3c28f56e"
+  "sha256": "472f07fb639879320724a9c64454819597ae1845bdb510dd792341867cdd965f"
 }
