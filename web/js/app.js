@@ -330,13 +330,21 @@ function renderDashboard() {
         </div>
       </div>
 
-      <!-- Sync Banner com botões destacados e ícones -->
+      <!-- Sync Banner com nome em linha superior e botões abaixo -->
       <div class="sync-banner">
-        <div>
-          <strong>${activeDbName}</strong>
-          <div style="color:var(--text-muted);font-size:0.75rem;">Base ativa no aparelho</div>
+        <div class="sync-banner-info">
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); letter-spacing: -0.01em;">
+              ${activeDbName}
+            </div>
+            <div style="color:var(--text-muted); font-size: 0.74rem; margin-top: 2px;">
+              Base ativa carregada no aparelho
+            </div>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--om-blue); background: var(--om-blue-bg); padding: 3px 8px; border-radius: 10px; font-weight: 600;">iCloud</span>
         </div>
-        <div style="display:flex;gap:8px;">
+
+        <div class="sync-banner-actions">
           <button id="btnReloadICloud" class="sync-btn btn-reload-cloud">
             🔄 Atualizar do iCloud
           </button>

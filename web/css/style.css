@@ -309,21 +309,34 @@ body::before {
 /* Sync status badge */
 .sync-banner {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   background: rgba(56, 189, 248, 0.08);
   border: 1px solid rgba(56, 189, 248, 0.2);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 14px 16px;
   margin-bottom: 20px;
-  font-size: 0.82rem;
+  gap: 12px;
+}
+
+.sync-banner-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sync-banner-actions {
+  display: flex;
   gap: 10px;
+  width: 100%;
 }
 
 .sync-btn {
+  flex: 1;
+  justify-content: center;
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-size: 0.78rem;
+  padding: 11px 8px;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
