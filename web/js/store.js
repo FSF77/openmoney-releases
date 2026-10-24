@@ -83,7 +83,22 @@ export class MoneyStore {
     return this.db.accounts.filter(a => !a.inactive);
   }
 
-  get accountsByType() {
+  get favoriteAccounts() {
+    if (!this.db || !this.db.accounts) return [];
+    return this.db.accounts.filter(a => a.favorite && !a.inactive);
+  }
+
+  get standardActiveAccounts() {
+    if (!this.db || !this.db.accounts) return [];
+    return this.db.accounts.filter(a => !a.favorite && !a.inactive);
+  }
+
+  get inactiveAccounts() {
+    if (!this.db || !this.db.accounts) return [];
+    return this.db.accounts.filter(a => a.inactive);
+  }
+
+  groupAccountsByType(list) {
     const map = {
       "Corrente": [],
       "Poupança": [],
@@ -91,7 +106,7 @@ export class MoneyStore {
       "Investimento": [],
       "Dinheiro": []
     };
-    for (const a of this.activeAccounts) {
+    for (const a of list) {
       const type = a.type || "Corrente";
       if (!map[type]) map[type] = [];
       map[type].push(a);
@@ -99,8 +114,16 @@ export class MoneyStore {
     return map;
   }
 
+  get accountsByType() {
+    return this.groupAccountsByType(this.activeAccounts);
+  }
+
   accountById(id) {
     return this.db?.accounts?.find(a => a.id === id) || null;
+  }
+
+  transactionById(id) {
+    return this.db?.txs?.find(t => t.id === id) || null;
   }
 
   // Calculate balances for an account (Real and Predicted)
@@ -348,6 +371,90 @@ export class MoneyStore {
     this.rebuildPayeeMap();
     this.notify();
     return createdTxs;
+  }
+
+  // Delete transaction (and mirror transaction if transfer)
+  deleteTransaction(txId) {
+    if (!this.db || !this.db.txs) return false;
+    const target = this.transactionById(txId);
+    if (!target) return false;
+
+    if (target.xfer) {
+      this.db.txs = this.db.txs.filter(t => t.xfer !== target.xfer);
+    } else {
+      this.db.txs = this.db.txs.filter(t => t.id !== txId);
+    }
+
+    this.rebuildPayeeMap();
+    this.notify();
+    return true;
+  }
+
+  // Update existing transaction
+  updateTransaction(txId, {
+    accId,
+    date,
+    payee,
+    catSelection,
+    memo = '',
+    signedAmt,
+    manualRec = undefined,
+    peerId = null
+  }) {
+    if (!this.db || !this.db.txs) return false;
+    const idx = this.db.txs.findIndex(t => t.id === txId);
+    if (idx < 0) return false;
+
+    const t = this.db.txs[idx];
+    const curAcc = this.accountById(accId);
+    if (!curAcc) return false;
+
+    const isCard = curAcc.type === CARD_TYPE && Boolean(curAcc.card);
+    const newIk = isCard ? invKeyFor(curAcc.card, date) : null;
+    const isXfer = Boolean(peerId || t.xfer);
+    const targetPeerId = peerId || t.peer;
+    const peerAcc = targetPeerId ? this.accountById(targetPeerId) : null;
+    const catLabel = isXfer ? `Transferência: ${peerAcc?.name || ''}` : catSelection;
+
+    t.acc = accId;
+    t.date = date;
+    t.payee = payee.trim();
+    t.cat = catLabel;
+    t.memo = memo.trim();
+    t.amt = isXfer ? -Math.abs(signedAmt) : signedAmt;
+    t.ik = newIk;
+    if (manualRec !== undefined) {
+      t.rec = Boolean(manualRec);
+    }
+
+    // Mirror leg if transfer
+    if (t.xfer) {
+      const mirrorIdx = this.db.txs.findIndex(o => o.xfer === t.xfer && o.id !== t.id);
+      if (mirrorIdx >= 0) {
+        const m = this.db.txs[mirrorIdx];
+        m.date = date;
+        m.payee = payee.trim();
+        m.memo = memo.trim();
+        m.amt = Math.abs(signedAmt);
+        if (manualRec !== undefined) {
+          m.rec = Boolean(manualRec);
+        }
+        if (targetPeerId) {
+          m.acc = targetPeerId;
+          m.peer = accId;
+          m.cat = `Transferência: ${curAcc.name}`;
+          if (peerAcc && peerAcc.type === CARD_TYPE && peerAcc.card) {
+            m.ik = invKeyFor(peerAcc.card, date);
+          } else {
+            m.ik = null;
+          }
+        }
+      }
+    }
+
+    this.rebuildPayeeMap();
+    this.notify();
+    return true;
   }
 }
 

@@ -7,6 +7,14 @@ let activeDbName = null;
 let currentTxType = 'despesa'; // 'despesa', 'receita', 'transferencia'
 let activeAccountDetailId = null;
 let activeAccountDetailFilter = 'month'; // 'month', 'all'
+let selectedActionTxId = null;
+
+// Collapsed state for account groups
+const collapsedSections = {
+  fav: false,
+  active: false,
+  inactive: true
+};
 
 // Initialize Service Worker
 if ('serviceWorker' in navigator) {
@@ -113,14 +121,11 @@ function renderWelcome() {
   document.getElementById('fileInputWelcome').addEventListener('change', handleFileInput);
 }
 
-// Render Dashboard View
-function renderDashboard() {
-  const app = document.getElementById('app');
-  const nw = store.calculateTotalNetWorth();
-  const accsByType = store.accountsByType;
-
-  let sectionsHtml = '';
-  const typeOrder = ["Corrente", "Poupança", "Cartão de crédito", "Investimento", "Dinheiro"];
+// Render Single Account Card
+function renderAccountCard(a) {
+  const b = store.calculateAccountBalance(a);
+  const isCard = a.type === CARD_TYPE;
+  const realClass = b.real < 0 ? 'text-negative' : (b.real > 0 ? 'text-positive' : 'text-neutral');
   const typeIcons = {
     "Corrente": { icon: "💳", cls: "icon-corrente" },
     "Poupança": { icon: "🏦", cls: "icon-poupanca" },
@@ -128,48 +133,106 @@ function renderDashboard() {
     "Investimento": { icon: "📈", cls: "icon-investimento" },
     "Dinheiro": { icon: "💵", cls: "icon-dinheiro" }
   };
+  const iconInfo = typeIcons[a.type] || { icon: "💳", cls: "icon-corrente" };
 
-  for (const type of typeOrder) {
-    const accs = accsByType[type] || [];
-    if (accs.length === 0) continue;
-
-    let cardsHtml = '';
-    for (const a of accs) {
-      const b = store.calculateAccountBalance(a);
-      const isCard = a.type === CARD_TYPE;
-      const realClass = b.real < 0 ? 'text-negative' : (b.real > 0 ? 'text-positive' : 'text-neutral');
-
-      cardsHtml += `
-        <div class="account-card" data-acc-id="${a.id}">
-          <div class="account-info">
-            <div class="account-icon ${typeIcons[type].cls}">
-              ${typeIcons[type].icon}
-            </div>
-            <div class="account-details">
-              <div class="name">${a.name}</div>
-              <div class="type">${isCard && a.card ? `Fecha dia ${a.card.closeDay} · Vence dia ${a.card.dueDay}` : a.type}</div>
-            </div>
-          </div>
-          <div class="account-balances">
-            <div class="real ${realClass}">${formatCurrency(b.real)}</div>
-            ${b.pred !== b.real ? `<div class="pred">Previsto: ${formatCurrency(b.pred)}</div>` : ''}
-          </div>
+  return `
+    <div class="account-card" data-acc-id="${a.id}">
+      <div class="account-info">
+        <div class="account-icon ${iconInfo.cls}">
+          ${iconInfo.icon}
         </div>
-      `;
-    }
-
-    sectionsHtml += `
-      <div class="section-title">
-        <span>${type}</span>
-        <span>${accs.length}</span>
+        <div class="account-details">
+          <div class="name">
+            ${a.favorite ? '<span class="badge-favorite">★</span> ' : ''}
+            ${a.name}
+            ${a.inactive ? '<span style="font-size:0.68rem;color:var(--text-muted);background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:6px;margin-left:4px;">INATIVA</span>' : ''}
+          </div>
+          <div class="type">${isCard && a.card ? `Fecha dia ${a.card.closeDay} · Vence dia ${a.card.dueDay}` : a.type}</div>
+        </div>
       </div>
-      <div class="accounts-grid">
-        ${cardsHtml}
+      <div class="account-balances">
+        <div class="real ${realClass}">${formatCurrency(b.real)}</div>
+        ${b.pred !== b.real ? `<div class="pred">Previsto: ${formatCurrency(b.pred)}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// Render Dashboard View
+function renderDashboard() {
+  const app = document.getElementById('app');
+  const nw = store.calculateTotalNetWorth();
+
+  // 1. Contas Favoritas (se houver)
+  const favAccounts = store.favoriteAccounts;
+  let favSectionHtml = '';
+  if (favAccounts.length > 0) {
+    const isCollapsed = Boolean(collapsedSections.fav);
+    let cards = favAccounts.map(a => renderAccountCard(a)).join('');
+    favSectionHtml = `
+      <div class="collapsible-header ${isCollapsed ? 'collapsed' : ''}" data-section="fav">
+        <div class="title-wrap">
+          <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          <span>⭐ Contas Favoritas</span>
+        </div>
+        <span class="badge-count">${favAccounts.length}</span>
+      </div>
+      <div class="collapsible-content ${isCollapsed ? 'collapsed' : ''}" id="sec-content-fav">
+        ${cards}
       </div>
     `;
   }
 
-  // Today's transactions and recent past transactions (strictly <= today)
+  // 2. Contas Ativas (Padrão) agrupadas por tipo
+  const activeAccounts = store.standardActiveAccounts;
+  const isActCollapsed = Boolean(collapsedSections.active);
+  let activeCardsHtml = '';
+  const typeOrder = ["Corrente", "Poupança", "Cartão de crédito", "Investimento", "Dinheiro"];
+  const byType = store.groupAccountsByType(activeAccounts);
+
+  for (const type of typeOrder) {
+    const list = byType[type] || [];
+    if (list.length === 0) continue;
+    activeCardsHtml += `
+      <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin:8px 0 4px 6px;">${type}</div>
+      ${list.map(a => renderAccountCard(a)).join('')}
+    `;
+  }
+
+  const activeSectionHtml = `
+    <div class="collapsible-header ${isActCollapsed ? 'collapsed' : ''}" data-section="active">
+      <div class="title-wrap">
+        <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        <span>Contas Ativas</span>
+      </div>
+      <span class="badge-count">${activeAccounts.length}</span>
+    </div>
+    <div class="collapsible-content ${isActCollapsed ? 'collapsed' : ''}" id="sec-content-active">
+      ${activeCardsHtml || '<div style="color:var(--text-muted);font-size:0.85rem;padding:8px 12px;">Todas as contas estão nas Favoritas.</div>'}
+    </div>
+  `;
+
+  // 3. Contas Inativas (se houver, recolhidas por padrão como no macOS)
+  const inactAccounts = store.inactiveAccounts;
+  let inactSectionHtml = '';
+  if (inactAccounts.length > 0) {
+    const isInactCollapsed = Boolean(collapsedSections.inactive);
+    let cards = inactAccounts.map(a => renderAccountCard(a)).join('');
+    inactSectionHtml = `
+      <div class="collapsible-header ${isInactCollapsed ? 'collapsed' : ''}" data-section="inactive">
+        <div class="title-wrap">
+          <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          <span>📁 Contas Inativas</span>
+        </div>
+        <span class="badge-count">${inactAccounts.length}</span>
+      </div>
+      <div class="collapsible-content ${isInactCollapsed ? 'collapsed' : ''}" id="sec-content-inactive">
+        ${cards}
+      </div>
+    `;
+  }
+
+  // Lançamentos de Hoje e Anteriores
   const todayData = store.getTodayTransactions();
   let recentHtml = '';
   
@@ -179,7 +242,7 @@ function renderDashboard() {
       const isNeg = t.amt < 0;
       const acc = store.accountById(t.acc);
       items += `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-glass);">
+        <div class="tx-clickable-row" data-tx-id="${t.id}" style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border-glass);">
           <div>
             <div style="font-weight:600;font-size:0.92rem;">${t.payee}</div>
             <div style="font-size:0.75rem;color:var(--text-muted);">${acc?.name || ''} · ${t.cat || 'Sem categoria'}</div>
@@ -211,7 +274,7 @@ function renderDashboard() {
       const isNeg = t.amt < 0;
       const acc = store.accountById(t.acc);
       pastItems += `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-glass);">
+        <div class="tx-clickable-row" data-tx-id="${t.id}" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-glass);">
           <div>
             <div style="font-weight:600;font-size:0.9rem;">${t.payee}</div>
             <div style="font-size:0.74rem;color:var(--text-muted);">${formatDateBR(t.date)} · ${acc?.name || ''}</div>
@@ -267,23 +330,29 @@ function renderDashboard() {
         </div>
       </div>
 
+      <!-- Sync Banner com botões destacados e ícones -->
       <div class="sync-banner">
         <div>
           <strong>${activeDbName}</strong>
           <div style="color:var(--text-muted);font-size:0.75rem;">Base ativa no aparelho</div>
         </div>
         <div style="display:flex;gap:8px;">
-          <button id="btnReloadICloud" class="sync-btn" style="background:rgba(255,255,255,0.08);color:var(--text-primary);border:1px solid var(--border-glass);">
+          <button id="btnReloadICloud" class="sync-btn btn-reload-cloud">
             🔄 Atualizar do iCloud
           </button>
-          <button id="btnSyncICloud" class="sync-btn">
+          <button id="btnSyncICloud" class="sync-btn btn-save-cloud">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
             Salvar no iCloud
           </button>
         </div>
         <input type="file" id="fileInputReload" accept=".json" style="display:none;">
       </div>
 
-      ${sectionsHtml}
+      <!-- Contas Agrupadas Estilo macOS -->
+      ${favSectionHtml}
+      ${activeSectionHtml}
+      ${inactSectionHtml}
+
       ${recentHtml}
     </main>
 
@@ -296,7 +365,7 @@ function renderDashboard() {
   // Attach Dashboard events
   document.getElementById('btnSwitchDb').addEventListener('click', openDatabaseSwitcher);
   document.getElementById('btnSyncICloud').addEventListener('click', syncCurrentDatabaseToICloud);
-  document.getElementById('btnOpenNewTx').addEventListener('click', openNewTransactionModal);
+  document.getElementById('btnOpenNewTx').addEventListener('click', () => openNewTransactionModal());
 
   const btnReload = document.getElementById('btnReloadICloud');
   const fileReload = document.getElementById('fileInputReload');
@@ -305,11 +374,32 @@ function renderDashboard() {
     fileReload.addEventListener('change', handleFileInput);
   }
 
+  // Collapsible headers toggle
+  document.querySelectorAll('.collapsible-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const secKey = header.getAttribute('data-section');
+      collapsedSections[secKey] = !collapsedSections[secKey];
+      header.classList.toggle('collapsed', collapsedSections[secKey]);
+      const content = document.getElementById(`sec-content-${secKey}`);
+      if (content) {
+        content.classList.toggle('collapsed', collapsedSections[secKey]);
+      }
+    });
+  });
+
   // Account card click -> open details
   document.querySelectorAll('.account-card').forEach(card => {
     card.addEventListener('click', () => {
       const accId = card.getAttribute('data-acc-id');
       openAccountDetailsModal(accId);
+    });
+  });
+
+  // Transaction row click -> open action sheet
+  document.querySelectorAll('.tx-clickable-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const txId = row.getAttribute('data-tx-id');
+      openTransactionActionsModal(txId);
     });
   });
 }
@@ -449,7 +539,7 @@ function renderAccountTransactionsList() {
       <span>Rec: <strong class="text-positive">${formatCurrency(monthData.totalIncome)}</strong> · Desp: <strong class="text-negative">${formatCurrency(monthData.totalExpense)}</strong></span>
     `;
   } else {
-    txs = store.getRecentTransactions(activeAccountDetailId, 100);
+    txs = store.getRecentTransactions(activeAccountDetailId, 100, todayISO());
     summaryBanner.style.display = 'none';
   }
 
@@ -469,7 +559,7 @@ function renderAccountTransactionsList() {
 
     const isNegative = t.amt < 0;
     html += `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border-glass);">
+      <div class="tx-clickable-row" data-tx-id="${t.id}" style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border-glass);">
         <div>
           <div style="font-weight:600;font-size:0.92rem;">${t.payee}</div>
           <div style="font-size:0.75rem;color:var(--text-muted);">${t.cat || 'Sem categoria'} ${t.memo ? `· ${t.memo}` : ''}</div>
@@ -484,10 +574,76 @@ function renderAccountTransactionsList() {
     `;
   }
   txList.innerHTML = html;
+
+  // Attach click to account detail rows
+  txList.querySelectorAll('.tx-clickable-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const txId = row.getAttribute('data-tx-id');
+      openTransactionActionsModal(txId);
+    });
+  });
 }
 
-// Open New Transaction Modal
+// Open Transaction Actions Modal (Editar, Copiar, Excluir)
+function openTransactionActionsModal(txId) {
+  const t = store.transactionById(txId);
+  if (!t) return;
+  selectedActionTxId = txId;
+
+  const modal = document.getElementById('modalTxActions');
+  const payeeEl = document.getElementById('actionTxPayee');
+  const subtitleEl = document.getElementById('actionTxSubtitle');
+  const amountEl = document.getElementById('actionTxAmount');
+  const statusEl = document.getElementById('actionTxStatus');
+
+  const acc = store.accountById(t.acc);
+  payeeEl.textContent = t.payee;
+  subtitleEl.textContent = `${formatDateBR(t.date)} · ${acc?.name || ''} · ${t.cat || 'Sem categoria'}`;
+  
+  const isNeg = t.amt < 0;
+  amountEl.textContent = formatCurrency(t.amt);
+  amountEl.className = isNeg ? 'text-negative' : 'text-positive';
+
+  statusEl.textContent = t.rec ? '✓ Lançamento Conciliado (Efetivado)' : '○ Lançamento Pendente / Previsto';
+
+  openModal(modal);
+}
+
+// Open New Transaction Modal (Create Mode)
 function openNewTransactionModal() {
+  document.getElementById('txEditId').value = '';
+  document.getElementById('txModalTitle').textContent = 'Novo Lançamento';
+  document.getElementById('btnSaveTx').textContent = 'Salvar Lançamento';
+  prepareTransactionForm();
+}
+
+// Open Edit Transaction Modal (Pre-populate with existing)
+function openEditTransactionModal(txId) {
+  const t = store.transactionById(txId);
+  if (!t) return;
+
+  document.getElementById('txEditId').value = txId;
+  document.getElementById('txModalTitle').textContent = 'Editar Lançamento';
+  document.getElementById('btnSaveTx').textContent = 'Atualizar Lançamento';
+
+  prepareTransactionForm(t);
+}
+
+// Open Copy Transaction Modal (Duplicate with today's date)
+function openCopyTransactionModal(txId) {
+  const t = store.transactionById(txId);
+  if (!t) return;
+
+  document.getElementById('txEditId').value = '';
+  document.getElementById('txModalTitle').textContent = 'Novo Lançamento (Cópia)';
+  document.getElementById('btnSaveTx').textContent = 'Salvar Lançamento';
+
+  // Clone with date = today
+  const cloned = { ...t, date: todayISO(), rec: true };
+  prepareTransactionForm(cloned);
+}
+
+function prepareTransactionForm(preset = null) {
   const modal = document.getElementById('modalNewTx');
   const accSelect = document.getElementById('txAccSelect');
   const peerSelect = document.getElementById('txPeerSelect');
@@ -495,6 +651,7 @@ function openNewTransactionModal() {
   const dateInput = document.getElementById('txDate');
   const payeeInput = document.getElementById('txPayee');
   const amtInput = document.getElementById('txAmount');
+  const memoInput = document.getElementById('txMemo');
   const chipsContainer = document.getElementById('payeeChipsContainer');
   const recCheckbox = document.getElementById('txRecCheckbox');
   const dropdown = document.getElementById('payeeDropdown');
@@ -510,22 +667,46 @@ function openNewTransactionModal() {
   accSelect.innerHTML = accOptions;
   peerSelect.innerHTML = accOptions;
 
-  // Defaults
-  dateInput.value = todayISO();
-  amtInput.value = '';
-  payeeInput.value = '';
-  document.getElementById('txMemo').value = '';
-  document.getElementById('txMode').value = 'single';
-  document.getElementById('txInstallmentsGroup').style.display = 'none';
-  document.getElementById('txInstallments').value = '2';
-  recCheckbox.checked = true;
+  if (preset) {
+    const isXfer = Boolean(preset.peer || preset.xfer);
+    const absCents = Math.abs(preset.amt);
+    const reals = Math.floor(absCents / 100);
+    const cents = absCents % 100;
 
-  // Set type
-  setTransactionType('despesa');
+    amtInput.value = `${reals.toLocaleString('pt-BR')},${cents.toString().padStart(2, '0')}`;
+    payeeInput.value = preset.payee.replace(/\s\(\d+\/\d+\)$/, '').trim();
+    accSelect.value = preset.acc;
+    dateInput.value = preset.date;
+    memoInput.value = preset.memo || '';
+    recCheckbox.checked = Boolean(preset.rec);
+
+    document.getElementById('txMode').value = 'single';
+    document.getElementById('txInstallmentsGroup').style.display = 'none';
+
+    if (isXfer) {
+      setTransactionType('transferencia');
+      if (preset.peer) peerSelect.value = preset.peer;
+    } else {
+      setTransactionType(preset.amt < 0 ? 'despesa' : 'receita');
+      if (preset.cat) catSelect.value = preset.cat;
+    }
+  } else {
+    // New Defaults
+    dateInput.value = todayISO();
+    amtInput.value = '';
+    payeeInput.value = '';
+    memoInput.value = '';
+    document.getElementById('txMode').value = 'single';
+    document.getElementById('txInstallmentsGroup').style.display = 'none';
+    document.getElementById('txInstallments').value = '2';
+    recCheckbox.checked = true;
+
+    setTransactionType('despesa');
+  }
 
   // Frequent Payees chips
   const frequent = store.getFrequentPayees();
-  if (frequent.length > 0) {
+  if (frequent.length > 0 && !preset) {
     let chipsHtml = '';
     for (const item of frequent.slice(0, 10)) {
       chipsHtml += `<div class="chip" data-payee="${item.payee}" data-cat="${item.cat}" data-type="${item.isExpense ? 'despesa' : 'receita'}">${item.payee}</div>`;
@@ -597,7 +778,7 @@ function setTransactionType(type) {
   }
 }
 
-// Submit new transaction
+// Submit new or edited transaction
 async function submitNewTransaction() {
   const amtRaw = document.getElementById('txAmount').value;
   const cents = parseCurrencyToCents(amtRaw);
@@ -606,6 +787,7 @@ async function submitNewTransaction() {
     return;
   }
 
+  const editId = document.getElementById('txEditId').value;
   const accId = document.getElementById('txAccSelect').value;
   const date = document.getElementById('txDate').value || todayISO();
   const payee = document.getElementById('txPayee').value.trim();
@@ -635,27 +817,46 @@ async function submitNewTransaction() {
   const signedAmt = currentTxType === 'despesa' ? -cents : cents;
 
   try {
-    store.addTransaction({
-      accId,
-      date,
-      payee: payee || 'Transferência',
-      catSelection,
-      memo,
-      signedAmt,
-      mode,
-      installments,
-      peerId,
-      manualRec: isReconciled
-    });
+    if (editId) {
+      // Edit existing transaction
+      store.updateTransaction(editId, {
+        accId,
+        date,
+        payee: payee || 'Transferência',
+        catSelection,
+        memo,
+        signedAmt,
+        manualRec: isReconciled,
+        peerId
+      });
+      showToast('✓ Lançamento atualizado com sucesso!');
+    } else {
+      // Create new transaction
+      store.addTransaction({
+        accId,
+        date,
+        payee: payee || 'Transferência',
+        catSelection,
+        memo,
+        signedAmt,
+        mode,
+        installments,
+        peerId,
+        manualRec: isReconciled
+      });
+      showToast('✓ Lançamento incluído com sucesso!');
+    }
 
     // Save to local IndexedDB
     await dbManager.saveDatabase(activeDbName, store.db);
 
     closeAllModals();
     renderDashboard();
-    showToast('✓ Lançamento incluído com sucesso!');
+    if (activeAccountDetailId) {
+      renderAccountTransactionsList();
+    }
   } catch (err) {
-    alert(`Erro ao adicionar: ${err.message}`);
+    alert(`Erro ao processar: ${err.message}`);
   }
 }
 
@@ -679,6 +880,47 @@ function setupEventListeners() {
   document.querySelectorAll('.sheet-close').forEach(btn => {
     btn.addEventListener('click', closeAllModals);
   });
+
+  // Action Sheet Buttons (Editar, Copiar, Excluir)
+  const btnEdit = document.getElementById('btnActionEditTx');
+  if (btnEdit) {
+    btnEdit.addEventListener('click', () => {
+      if (!selectedActionTxId) return;
+      const txId = selectedActionTxId;
+      closeAllModals();
+      openEditTransactionModal(txId);
+    });
+  }
+
+  const btnCopy = document.getElementById('btnActionCopyTx');
+  if (btnCopy) {
+    btnCopy.addEventListener('click', () => {
+      if (!selectedActionTxId) return;
+      const txId = selectedActionTxId;
+      closeAllModals();
+      openCopyTransactionModal(txId);
+    });
+  }
+
+  const btnDelete = document.getElementById('btnActionDeleteTx');
+  if (btnDelete) {
+    btnDelete.addEventListener('click', async () => {
+      if (!selectedActionTxId) return;
+      const t = store.transactionById(selectedActionTxId);
+      if (!t) return;
+
+      if (confirm(`Deseja realmente excluir o lançamento "${t.payee}" (${formatCurrency(t.amt)})?`)) {
+        store.deleteTransaction(selectedActionTxId);
+        await dbManager.saveDatabase(activeDbName, store.db);
+        closeAllModals();
+        renderDashboard();
+        if (activeAccountDetailId) {
+          renderAccountTransactionsList();
+        }
+        showToast('✓ Lançamento excluído com sucesso!');
+      }
+    });
+  }
 
   // Account details tab filters
   const tabMonth = document.getElementById('btnAccountTabMonth');
