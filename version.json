@@ -1,10 +1,10 @@
 {
   "version": "1.0.27",
-  "build": 39,
+  "build": 41,
   "releaseDate": "2026-10-24",
   "title": "OpenMoney v1.0.27",
-  "notes": "Central de Contas a Pagar e Receber, Notificações Nativas do Sistema e Lembretes de Conciliação (padrão 3 dias de antecedência)",
+  "notes": "Correção de layout da barra de filtros (Tipo) e largura da coluna de data na Central de Contas a Pagar e Receber",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.27.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.27",
-  "sha256": "bc9fd1c4867abdf40fd9f84531c5ab2a5ce1b61129805f4a70c9d1ef1da1fddf"
+  "sha256": "850d724625d6420bea120e8bd37699094eaf93c25ede8412566023685605f9e0"
 }

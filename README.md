@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.27** (Build 39)
-> *Publicada em: 24/10/2026 às 19:29*
+## ⚡ Última Versão Disponível: **v1.0.27** (Build 41)
+> *Publicada em: 24/10/2026 às 20:02*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-bc9fd1c4867abdf40fd9f84531c5ab2a5ce1b61129805f4a70c9d1ef1da1fddf  OpenMoney-1.0.27.zip
+850d724625d6420bea120e8bd37699094eaf93c25ede8412566023685605f9e0  OpenMoney-1.0.27.zip
 ```
 
 ### 📝 Notas desta Versão
-Implementação da Central de Contas a Pagar e Receber, Notificações Nativas do Sistema e Lembretes de Conciliação com janela padrão de 3 dias de antecedência.
+Ajustes finos de layout na Central de Contas a Pagar e Receber: correção do rótulo Tipo e largura da coluna de data.
 
 ---
 
