@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.25** (Build 33)
-> *Publicada em: 24/10/2026 às 15:27*
+## ⚡ Última Versão Disponível: **v1.0.26** (Build 36)
+> *Publicada em: 24/10/2026 às 17:39*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.25.zip** | Pacote oficial v1.0.25 para macOS | [📥 Download v1.0.25](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.25.zip) | ~3 MB |
+| **OpenMoney-1.0.26.zip** | Pacote oficial v1.0.26 para macOS | [📥 Download v1.0.26](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.26.zip) | ~3 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-2507558cf8648280b8ca79bce9a0e7328155d7b4d870ff53a3a4b37696f6e1b1  OpenMoney-1.0.25.zip
+217db0638d61b1c606e0fcd2c812416311cec4a3e4f417f8bc3f1b8024ce2a0f  OpenMoney-1.0.26.zip
 ```
 
 ### 📝 Notas desta Versão
-Novas funcionalidades, atualizações automáticas via internet e melhorias de estabilidade.
+Melhorias no aviso de abatimento (Liquid Glass), ordenação cronológica estável no mesmo dia, proteção na inicialização para bases não encontradas, histórico de arquivos recentes no menu Arquivo e suporte a faturas de cartão no CSV
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.25.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.25.zip).
+1. Baixe o pacote [OpenMoney-1.0.26.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.26.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
