@@ -1,10 +1,12 @@
 // OpenMoney Mobile Web Application Controller
 import { store } from './store.js';
 import { dbManager } from './db.js';
-import { formatCurrency, parseCurrencyToCents, todayISO, formatDateBR, CARD_TYPE } from './models.js';
+import { formatCurrency, parseCurrencyToCents, todayISO, formatDateBR, formatMonthBR, CARD_TYPE } from './models.js';
 
 let activeDbName = null;
 let currentTxType = 'despesa'; // 'despesa', 'receita', 'transferencia'
+let activeAccountDetailId = null;
+let activeAccountDetailFilter = 'month'; // 'month', 'all'
 
 // Initialize Service Worker
 if ('serviceWorker' in navigator) {
@@ -24,6 +26,20 @@ export function showToast(msg, duration = 3000) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, duration);
+}
+
+// Modal open/close helpers with body scroll lock
+function openModal(modal) {
+  if (!modal) return;
+  document.body.classList.add('modal-open');
+  modal.classList.add('active');
+}
+
+function closeAllModals() {
+  document.body.classList.remove('modal-open');
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+  const dropdown = document.getElementById('payeeDropdown');
+  if (dropdown) dropdown.classList.remove('show');
 }
 
 // App Initialization
@@ -54,11 +70,33 @@ function renderWelcome() {
     <div class="container">
       <div class="welcome-card">
         <img src="icons/icon-192.png" alt="OpenMoney" class="welcome-icon">
-        <h1 class="welcome-title">Bem-vindo ao OpenMoney</h1>
+        <h1 class="welcome-title">OpenMoney Mobile</h1>
         <p class="welcome-desc">
-          Aplicativo móvel complementar com total soberania de dados. 
-          Selecione a base de dados <strong>.json</strong> do seu iCloud Drive para começar.
+          Controle financeiro pessoal e patrimonial com soberania absoluta.
         </p>
+
+        <!-- Passos de Instalação e Inicialização -->
+        <div class="steps-card">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <div class="step-title">Instalar na Tela de Início (Recomendado)</div>
+              <div class="step-desc">
+                Toque no ícone de <strong>Compartilhar (↑)</strong> do Safari e escolha <strong>"Adicionar à Tela de Início"</strong> para rodar como App sem barra de navegador.
+              </div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <div class="step-title">Selecionar sua Base do iCloud Drive</div>
+              <div class="step-desc">
+                Clique no botão abaixo para abrir seu arquivo <strong>.json</strong> (ex: <code>openmoney.json</code>). Ele será salvo localmente no aparelho.
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button id="btnWelcomeChooseFile" class="btn-choose-file">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           Abrir Base do iCloud (.json)
@@ -114,7 +152,7 @@ function renderDashboard() {
           </div>
           <div class="account-balances">
             <div class="real ${realClass}">${formatCurrency(b.real)}</div>
-            <div class="pred">Previsto: ${formatCurrency(b.pred)}</div>
+            ${b.pred !== b.real ? `<div class="pred">Previsto: ${formatCurrency(b.pred)}</div>` : ''}
           </div>
         </div>
       `;
@@ -127,6 +165,40 @@ function renderDashboard() {
       </div>
       <div class="accounts-grid">
         ${cardsHtml}
+      </div>
+    `;
+  }
+
+  // Recent transactions list on Dashboard
+  const recentTxs = store.getRecentTransactions(null, 5);
+  let recentHtml = '';
+  if (recentTxs.length > 0) {
+    let items = '';
+    for (const t of recentTxs) {
+      const isNeg = t.amt < 0;
+      const acc = store.accountById(t.acc);
+      items += `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-glass);">
+          <div>
+            <div style="font-weight:600;font-size:0.92rem;">${t.payee}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${formatDateBR(t.date)} · ${acc?.name || ''} · ${t.cat || 'Sem categoria'}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:700;font-size:0.95rem;" class="${isNeg ? 'text-negative' : 'text-positive'}">
+              ${formatCurrency(t.amt)}
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">${t.rec ? '✓ Efetivado' : 'Previsto'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    recentHtml = `
+      <div class="section-title" style="margin-top: 26px;">
+        <span>Últimos Lançamentos</span>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:8px 16px;">
+        ${items}
       </div>
     `;
   }
@@ -150,7 +222,7 @@ function renderDashboard() {
           ${formatCurrency(nw.real)}
         </div>
         <div class="net-worth-sub">
-          <span>Saldo Previsto no mês:</span>
+          <span>Saldo Previsto no mês (${formatMonthBR(store.activeMonth)}):</span>
           <span class="val">${formatCurrency(nw.pred)}</span>
         </div>
       </div>
@@ -158,12 +230,13 @@ function renderDashboard() {
       <div class="sync-banner">
         <div>
           <strong>${activeDbName}</strong>
-          <div style="color:var(--text-muted);font-size:0.75rem;">Gravado localmente no aparelho</div>
+          <div style="color:var(--text-muted);font-size:0.75rem;">Base ativa salva no aparelho</div>
         </div>
         <button id="btnSyncICloud" class="sync-btn">Salvar no iCloud</button>
       </div>
 
       ${sectionsHtml}
+      ${recentHtml}
     </main>
 
     <button id="btnOpenNewTx" class="fab-btn">
@@ -209,7 +282,7 @@ async function syncCurrentDatabaseToICloud() {
   try {
     const res = await dbManager.exportToFile(activeDbName, store.db);
     if (res.success) {
-      showToast('Arquivo exportado! Salve-o no iCloud Drive para sincronizar.');
+      showToast('Exportado com sucesso! Salve/Substitua na pasta do iCloud Drive.');
     }
   } catch (err) {
     alert(`Erro ao exportar base: ${err.message}`);
@@ -273,62 +346,100 @@ async function openDatabaseSwitcher() {
     });
   });
 
-  modal.classList.add('active');
+  openModal(modal);
 }
 
-// Account Details Modal (Recent transactions)
+// Account Details Modal (Filtered by Current Month or All)
 function openAccountDetailsModal(accId) {
+  activeAccountDetailId = accId;
   const acc = store.accountById(accId);
   if (!acc) return;
 
   const modal = document.getElementById('modalAccountDetails');
   const title = document.getElementById('accountDetailsTitle');
   const subtitle = document.getElementById('accountDetailsSubtitle');
-  const txList = document.getElementById('accountTxList');
 
   const b = store.calculateAccountBalance(acc);
   title.textContent = acc.name;
   subtitle.textContent = `Saldo Real: ${formatCurrency(b.real)} | Previsto: ${formatCurrency(b.pred)}`;
 
-  const txs = store.getRecentTransactions(accId, 25);
-  if (txs.length === 0) {
-    txList.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-muted);">Nenhum lançamento registrado nesta conta.</div>`;
+  // Set active tab
+  document.getElementById('btnAccountTabMonth').classList.toggle('active', activeAccountDetailFilter === 'month');
+  document.getElementById('btnAccountTabAll').classList.toggle('active', activeAccountDetailFilter === 'all');
+
+  renderAccountTransactionsList();
+  openModal(modal);
+}
+
+function renderAccountTransactionsList() {
+  const acc = store.accountById(activeAccountDetailId);
+  if (!acc) return;
+
+  const txList = document.getElementById('accountTxList');
+  const summaryBanner = document.getElementById('accountTxSummary');
+
+  let txs = [];
+  if (activeAccountDetailFilter === 'month') {
+    const monthData = store.getAccountMonthData(activeAccountDetailId, store.activeMonth);
+    txs = monthData.transactions;
+
+    summaryBanner.style.display = 'flex';
+    summaryBanner.innerHTML = `
+      <span>${formatMonthBR(store.activeMonth)}: <strong>${monthData.count} lançamentos</strong></span>
+      <span>Rec: <strong class="text-positive">${formatCurrency(monthData.totalIncome)}</strong> · Desp: <strong class="text-negative">${formatCurrency(monthData.totalExpense)}</strong></span>
+    `;
   } else {
-    let html = '';
-    for (const t of txs) {
-      const isNegative = t.amt < 0;
-      html += `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-glass);">
-          <div>
-            <div style="font-weight:600;font-size:0.92rem;">${t.payee}</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);">${formatDateBR(t.date)} · ${t.cat || 'Sem categoria'}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-weight:700;font-size:0.95rem;" class="${isNegative ? 'text-negative' : 'text-positive'}">
-              ${formatCurrency(t.amt)}
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">${t.rec ? '✓ Conciliado' : 'Pendente'}</div>
-          </div>
-        </div>
-      `;
-    }
-    txList.innerHTML = html;
+    txs = store.getRecentTransactions(activeAccountDetailId, 100);
+    summaryBanner.style.display = 'none';
   }
 
-  modal.classList.add('active');
+  if (txs.length === 0) {
+    txList.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-muted);">Nenhum lançamento encontrado neste período.</div>`;
+    return;
+  }
+
+  // Group by date
+  let lastDate = '';
+  let html = '';
+  for (const t of txs) {
+    if (t.date !== lastDate) {
+      lastDate = t.date;
+      html += `<div class="tx-day-header">${formatDateBR(t.date)}</div>`;
+    }
+
+    const isNegative = t.amt < 0;
+    html += `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border-glass);">
+        <div>
+          <div style="font-weight:600;font-size:0.92rem;">${t.payee}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">${t.cat || 'Sem categoria'} ${t.memo ? `· ${t.memo}` : ''}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:700;font-size:0.95rem;" class="${isNegative ? 'text-negative' : 'text-positive'}">
+            ${formatCurrency(t.amt)}
+          </div>
+          <div style="font-size:0.7rem;color:var(--text-muted);">${t.rec ? '✓ Conciliado' : 'Pendente'}</div>
+        </div>
+      </div>
+    `;
+  }
+  txList.innerHTML = html;
 }
 
 // Open New Transaction Modal
 function openNewTransactionModal() {
   const modal = document.getElementById('modalNewTx');
   const accSelect = document.getElementById('txAccSelect');
-  const peerGroup = document.getElementById('txPeerGroup');
   const peerSelect = document.getElementById('txPeerSelect');
   const catSelect = document.getElementById('txCatSelect');
   const dateInput = document.getElementById('txDate');
   const payeeInput = document.getElementById('txPayee');
   const amtInput = document.getElementById('txAmount');
   const chipsContainer = document.getElementById('payeeChipsContainer');
+  const recCheckbox = document.getElementById('txRecCheckbox');
+  const dropdown = document.getElementById('payeeDropdown');
+
+  dropdown.classList.remove('show');
 
   // Fill accounts
   const accs = store.activeAccounts;
@@ -347,6 +458,7 @@ function openNewTransactionModal() {
   document.getElementById('txMode').value = 'single';
   document.getElementById('txInstallmentsGroup').style.display = 'none';
   document.getElementById('txInstallments').value = '2';
+  recCheckbox.checked = true;
 
   // Set type
   setTransactionType('despesa');
@@ -363,19 +475,31 @@ function openNewTransactionModal() {
 
     chipsContainer.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        payeeInput.value = chip.getAttribute('data-payee');
-        const cat = chip.getAttribute('data-cat');
-        const t = chip.getAttribute('data-type');
-        setTransactionType(t);
-        if (cat) catSelect.value = cat;
+        applyPayeeSelection(
+          chip.getAttribute('data-payee'),
+          chip.getAttribute('data-cat'),
+          chip.getAttribute('data-type')
+        );
       });
     });
   } else {
     chipsContainer.style.display = 'none';
   }
 
-  modal.classList.add('active');
+  openModal(modal);
   setTimeout(() => amtInput.focus(), 300);
+}
+
+// Apply selected payee autocomplete or chip
+function applyPayeeSelection(payeeName, catName, type) {
+  const payeeInput = document.getElementById('txPayee');
+  const catSelect = document.getElementById('txCatSelect');
+  const dropdown = document.getElementById('payeeDropdown');
+
+  payeeInput.value = payeeName;
+  if (type) setTransactionType(type);
+  if (catName) catSelect.value = catName;
+  dropdown.classList.remove('show');
 }
 
 // Switch transaction type in modal
@@ -428,6 +552,7 @@ async function submitNewTransaction() {
   const memo = document.getElementById('txMemo').value.trim();
   const mode = document.getElementById('txMode').value;
   const installments = parseInt(document.getElementById('txInstallments').value, 10) || 1;
+  const isReconciled = document.getElementById('txRecCheckbox').checked;
 
   if (currentTxType !== 'transferencia' && !payee) {
     alert('Informe o favorecido / estabelecimento.');
@@ -459,7 +584,8 @@ async function submitNewTransaction() {
       signedAmt,
       mode,
       installments,
-      peerId
+      peerId,
+      manualRec: isReconciled
     });
 
     // Save to local IndexedDB
@@ -467,31 +593,50 @@ async function submitNewTransaction() {
 
     closeAllModals();
     renderDashboard();
-    showToast('Lançamento adicionado com sucesso!');
+    showToast('✓ Lançamento incluído com sucesso!');
   } catch (err) {
     alert(`Erro ao adicionar: ${err.message}`);
   }
 }
 
-// Close all active modals
-function closeAllModals() {
-  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-}
-
 // Setup common DOM event listeners
 function setupEventListeners() {
-  // Close modal on overlay tap or close button
+  // Close modal on overlay tap (outside sheet)
   document.querySelectorAll('.modal-overlay').forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         closeAllModals();
       }
     });
+    // Prevent iOS background touchmove propagation
+    modal.addEventListener('touchmove', (e) => {
+      if (e.target === modal) {
+        e.preventDefault();
+      }
+    }, { passive: false });
   });
 
   document.querySelectorAll('.sheet-close').forEach(btn => {
     btn.addEventListener('click', closeAllModals);
   });
+
+  // Account details tab filters
+  const tabMonth = document.getElementById('btnAccountTabMonth');
+  const tabAll = document.getElementById('btnAccountTabAll');
+  if (tabMonth && tabAll) {
+    tabMonth.addEventListener('click', () => {
+      activeAccountDetailFilter = 'month';
+      tabMonth.classList.add('active');
+      tabAll.classList.remove('active');
+      renderAccountTransactionsList();
+    });
+    tabAll.addEventListener('click', () => {
+      activeAccountDetailFilter = 'all';
+      tabAll.classList.add('active');
+      tabMonth.classList.remove('active');
+      renderAccountTransactionsList();
+    });
+  }
 
   // New Tx Type Switcher
   document.querySelectorAll('.segmented-btn').forEach(btn => {
@@ -499,6 +644,62 @@ function setupEventListeners() {
       setTransactionType(btn.getAttribute('data-type'));
     });
   });
+
+  // Payee Live Autocomplete (as user types)
+  const payeeInput = document.getElementById('txPayee');
+  const payeeDropdown = document.getElementById('payeeDropdown');
+  if (payeeInput && payeeDropdown) {
+    payeeInput.addEventListener('input', () => {
+      const q = payeeInput.value.trim();
+      if (q.length < 2) {
+        payeeDropdown.classList.remove('show');
+        return;
+      }
+      const matches = store.searchPayees(q);
+      if (matches.length === 0) {
+        payeeDropdown.classList.remove('show');
+        return;
+      }
+
+      let html = '';
+      for (const m of matches) {
+        html += `
+          <div class="autocomplete-item" data-payee="${m.payee}" data-cat="${m.cat}" data-type="${m.isExpense ? 'despesa' : 'receita'}">
+            <span class="name">${m.payee}</span>
+            <span class="cat-badge">${m.cat || 'Geral'}</span>
+          </div>
+        `;
+      }
+      payeeDropdown.innerHTML = html;
+      payeeDropdown.classList.add('show');
+
+      payeeDropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+        item.addEventListener('click', () => {
+          applyPayeeSelection(
+            item.getAttribute('data-payee'),
+            item.getAttribute('data-cat'),
+            item.getAttribute('data-type')
+          );
+        });
+      });
+    });
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!payeeInput.contains(e.target) && !payeeDropdown.contains(e.target)) {
+        payeeDropdown.classList.remove('show');
+      }
+    });
+  }
+
+  // Date change -> automatically update reconciled checkbox suggestion
+  const dateInput = document.getElementById('txDate');
+  const recCheckbox = document.getElementById('txRecCheckbox');
+  if (dateInput && recCheckbox) {
+    dateInput.addEventListener('change', () => {
+      recCheckbox.checked = dateInput.value <= todayISO();
+    });
+  }
 
   // Installment toggle
   const modeSelect = document.getElementById('txMode');

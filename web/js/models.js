@@ -110,3 +110,27 @@ export function invKeyFor(cardConfig, dateStr) {
   }
   return addMonths(ym, 1);
 }
+
+// Normalize text for accent-insensitive search
+export function normalizeStr(str) {
+  if (!str) return '';
+  return str.toString()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+// Format "YYYY-MM" to readable Brazilian month name "Outubro de 2026"
+export function formatMonthBR(ym) {
+  if (!ym || ym.length < 7) return ym || '';
+  const [year, month] = ym.split('-');
+  const monthNames = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+  const idx = parseInt(month, 10) - 1;
+  const name = monthNames[idx] || month;
+  return `${name} de ${year}`;
+}
+

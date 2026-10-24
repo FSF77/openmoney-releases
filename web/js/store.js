@@ -1,10 +1,11 @@
 // OpenMoney Business Logic & In-Memory Store
-import { uid, invKeyFor, addMonths, CARD_TYPE, SEP } from './models.js';
+import { uid, invKeyFor, addMonths, todayISO, CARD_TYPE, SEP, normalizeStr } from './models.js';
 
 export class MoneyStore {
   constructor() {
     this.db = null;
-    this.activeMonth = new Date().toISOString().substring(0, 7); // "YYYY-MM"
+    this.activeMonth = todayISO().substring(0, 7); // "YYYY-MM"
+    this.payeeMap = new Map();
     this.listeners = [];
   }
 
@@ -25,7 +26,56 @@ export class MoneyStore {
     if (!this.db.cats) this.db.cats = [];
     if (!this.db.recs) this.db.recs = [];
     if (!this.db.budgets) this.db.budgets = {};
+    this.rebuildPayeeMap();
     this.notify();
+  }
+
+  rebuildPayeeMap() {
+    this.payeeMap.clear();
+    const txs = this.db?.txs || [];
+    for (const tx of txs) {
+      if (tx.auto || tx.xfer || !tx.payee) continue;
+      const clean = tx.payee.replace(/\s\(\d+\/\d+\)$/, '').trim();
+      if (!clean) continue;
+      const normKey = normalizeStr(clean);
+      if (!this.payeeMap.has(normKey)) {
+        this.payeeMap.set(normKey, {
+          payee: clean,
+          cat: tx.cat || '',
+          isExpense: tx.amt < 0,
+          count: 1,
+          lastDate: tx.date
+        });
+      } else {
+        const item = this.payeeMap.get(normKey);
+        item.count += 1;
+        if (tx.date > item.lastDate) {
+          item.lastDate = tx.date;
+          item.cat = tx.cat || item.cat;
+          item.isExpense = tx.amt < 0;
+        }
+      }
+    }
+  }
+
+  // Live Autocomplete for Payee (as user types)
+  searchPayees(query) {
+    if (!query) return [];
+    const normQ = normalizeStr(query);
+    if (!normQ) return [];
+
+    const matches = [];
+    for (const [normKey, item] of this.payeeMap.entries()) {
+      if (normKey.includes(normQ)) {
+        matches.push(item);
+      }
+    }
+    // Sort by count descending, then by lastDate descending
+    matches.sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return b.lastDate.localeCompare(a.lastDate);
+    });
+    return matches.slice(0, 8);
   }
 
   get activeAccounts() {
@@ -88,14 +138,50 @@ export class MoneyStore {
     return { real: totalReal, pred: totalPred };
   }
 
-  // Get recent transactions for an account or all accounts
-  getRecentTransactions(accId = null, limit = 20) {
+  // Month transactions for a specific account (with opening balance and totals)
+  getAccountMonthData(accId, monthYM = null) {
+    const ym = monthYM || this.activeMonth;
+    const acc = this.accountById(accId);
+    if (!acc) return { transactions: [], totalIncome: 0, totalExpense: 0, count: 0, month: ym };
+
+    const monthStart = `${ym}-01`;
+    const monthEnd = `${ym}-31`;
+    const accTxs = (this.db?.txs || []).filter(t => t.acc === accId);
+
+    const monthTxs = [];
+    let income = 0;
+    let expense = 0;
+
+    for (const t of accTxs) {
+      if (t.date >= monthStart && t.date <= monthEnd) {
+        monthTxs.push(t);
+        if (t.amt > 0) income += t.amt;
+        else expense += t.amt;
+      }
+    }
+
+    // Sort descending by date, then id
+    monthTxs.sort((a, b) => {
+      if (a.date !== b.date) return b.date.localeCompare(a.date);
+      return (b.id || '').localeCompare(a.id || '');
+    });
+
+    return {
+      month: ym,
+      transactions: monthTxs,
+      totalIncome: income,
+      totalExpense: expense,
+      count: monthTxs.length
+    };
+  }
+
+  // Get recent transactions across all accounts or for an account
+  getRecentTransactions(accId = null, limit = 15) {
     if (!this.db || !this.db.txs) return [];
     let list = this.db.txs;
     if (accId) {
       list = list.filter(t => t.acc === accId);
     }
-    // Sort descending by date, then id
     return [...list].sort((a, b) => {
       if (a.date !== b.date) return b.date.localeCompare(a.date);
       return (b.id || '').localeCompare(a.id || '');
@@ -131,35 +217,11 @@ export class MoneyStore {
     return paths.sort((a, b) => a.localeCompare(b, 'pt-BR'));
   }
 
-  // Frequent payees auto-complete suggestions
+  // Frequent payees for quick chips
   getFrequentPayees() {
-    if (!this.db || !this.db.txs) return [];
-    const map = new Map();
-    for (const tx of this.db.txs) {
-      if (tx.auto || tx.xfer || !tx.payee) continue;
-      const clean = tx.payee.replace(/\s\(\d+\/\d+\)$/, '').trim();
-      if (!clean) continue;
-      if (!map.has(clean)) {
-        map.set(clean, {
-          payee: clean,
-          cat: tx.cat || '',
-          isExpense: tx.amt < 0,
-          count: 1,
-          lastDate: tx.date
-        });
-      } else {
-        const item = map.get(clean);
-        item.count += 1;
-        if (tx.date > item.lastDate) {
-          item.lastDate = tx.date;
-          item.cat = tx.cat || item.cat;
-          item.isExpense = tx.amt < 0;
-        }
-      }
-    }
-    return Array.from(map.values())
+    return Array.from(this.payeeMap.values())
       .sort((a, b) => b.count - a.count)
-      .slice(0, 30);
+      .slice(0, 20);
   }
 
   // Add Transaction following all OpenMoney rules
@@ -172,7 +234,8 @@ export class MoneyStore {
     signedAmt,
     mode = 'single', // 'single', 'installment'
     installments = 1,
-    peerId = null
+    peerId = null,
+    manualRec = undefined
   }) {
     if (!this.db) throw new Error('Base de dados não carregada.');
     const curAcc = this.accountById(accId);
@@ -191,6 +254,7 @@ export class MoneyStore {
     const planId = count > 1 ? uid() : null;
 
     const createdTxs = [];
+    const today = todayISO();
 
     for (let i = 0; i < count; i++) {
       const txDate = i === 0 ? date : addMonths(date, i);
@@ -202,6 +266,11 @@ export class MoneyStore {
       const baseIk = isCard ? invKeyFor(curAcc.card, txDate) : null;
       const xferId = isXfer ? uid() : null;
 
+      // In OpenMoney Swift rules: single transactions or installment 1 are reconciled if date <= today
+      const isReconciled = manualRec !== undefined
+        ? Boolean(manualRec)
+        : (txDate <= today && i === 0);
+
       // Primary transaction (or transfer debit)
       const primaryTx = {
         id: uid(),
@@ -212,7 +281,7 @@ export class MoneyStore {
         cat: catLabel,
         memo: memo.trim(),
         amt: finalAmt,
-        rec: false,
+        rec: isReconciled,
         xfer: xferId,
         ik: baseIk,
         pn: count > 1 ? (i + 1) : null,
@@ -236,7 +305,7 @@ export class MoneyStore {
           cat: `Transferência: ${curAcc.name}`,
           memo: memo.trim(),
           amt: instCents, // Credit on destination
-          rec: false,
+          rec: isReconciled,
           xfer: xferId,
           ik: peerIk,
           pn: count > 1 ? (i + 1) : null,
@@ -249,6 +318,7 @@ export class MoneyStore {
 
     // Append to transactions
     this.db.txs.push(...createdTxs);
+    this.rebuildPayeeMap();
     this.notify();
     return createdTxs;
   }

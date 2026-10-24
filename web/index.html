@@ -54,7 +54,15 @@
         </div>
         <button class="sheet-close">&times;</button>
       </div>
-      <div id="accountTxList" style="overflow-y: auto; max-height: 55vh;"></div>
+
+      <!-- Filtro de Período -->
+      <div class="filter-tabs">
+        <button id="btnAccountTabMonth" class="filter-tab active">Mês Atual</button>
+        <button id="btnAccountTabAll" class="filter-tab">Todos os Lançamentos</button>
+      </div>
+
+      <div id="accountTxSummary" class="account-recent-banner" style="display:none;"></div>
+      <div id="accountTxList" style="overflow-y: auto; max-height: 52vh; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;"></div>
     </div>
   </div>
 
@@ -82,13 +90,16 @@
         </div>
       </div>
 
-      <!-- Sugestões de Favorecidos Frequentes -->
+      <!-- Sugestões de Favorecidos Frequentes (Chips) -->
       <div id="payeeChipsContainer" class="chips-scroll"></div>
 
-      <!-- Favorecido / Descrição -->
+      <!-- Favorecido / Descrição com Autocomplete -->
       <div class="form-group" id="txPayeeGroup">
         <label class="form-label">Favorecido / Estabelecimento</label>
-        <input type="text" id="txPayee" class="form-input" placeholder="Ex: Supermercado, Salário, Restaurante">
+        <div class="autocomplete-wrapper">
+          <input type="text" id="txPayee" class="form-input" placeholder="Ex: Supermercado, Salário, Restaurante" autocomplete="off" autocapitalize="words">
+          <div id="payeeDropdown" class="autocomplete-dropdown"></div>
+        </div>
       </div>
 
       <!-- Conta de Origem -->
@@ -113,6 +124,15 @@
       <div class="form-group">
         <label class="form-label">Data</label>
         <input type="date" id="txDate" class="form-input">
+      </div>
+
+      <!-- Status de Conciliação -->
+      <div class="form-group" style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);padding:10px 14px;border-radius:var(--radius-md);border:1px solid var(--border-glass);">
+        <div>
+          <label class="form-label" style="margin-bottom:2px;cursor:pointer;" for="txRecCheckbox">Conciliado (Efetivado)</label>
+          <div style="font-size:0.75rem;color:var(--text-muted);">Debita imediatamente do Saldo Real</div>
+        </div>
+        <input type="checkbox" id="txRecCheckbox" checked style="width:20px;height:20px;accent-color:var(--om-green);cursor:pointer;">
       </div>
 
       <!-- Modalidade: Único ou Parcelado -->

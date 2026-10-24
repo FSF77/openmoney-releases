@@ -156,7 +156,8 @@ class DatabaseManager {
 
   // Export database to iCloud Drive via Web Share API or download fallback
   async exportToFile(name, data) {
-    const jsonStr = JSON.stringify(data, null, 2);
+    // Produce compact JSON matching Store.swift JSONEncoder without prettyPrinted
+    const jsonStr = JSON.stringify(data);
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const filename = name.endsWith('.json') ? name : `${name}.json`;
 
