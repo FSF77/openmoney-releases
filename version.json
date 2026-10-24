@@ -1,10 +1,10 @@
 {
-  "version": "1.0.26",
-  "build": 36,
+  "version": "1.0.27",
+  "build": 39,
   "releaseDate": "2026-10-24",
-  "title": "OpenMoney v1.0.26",
-  "notes": "Melhorias no aviso de abatimento (Liquid Glass), ordenação cronológica estável no mesmo dia, proteção na inicialização para bases não encontradas, histórico de arquivos recentes no menu Arquivo e suporte a faturas de cartão no CSV",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.26.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.26",
-  "sha256": "217db0638d61b1c606e0fcd2c812416311cec4a3e4f417f8bc3f1b8024ce2a0f"
+  "title": "OpenMoney v1.0.27",
+  "notes": "Central de Contas a Pagar e Receber, Notificações Nativas do Sistema e Lembretes de Conciliação (padrão 3 dias de antecedência)",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.27.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.27",
+  "sha256": "bc9fd1c4867abdf40fd9f84531c5ab2a5ce1b61129805f4a70c9d1ef1da1fddf"
 }

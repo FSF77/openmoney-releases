@@ -456,6 +456,55 @@ export class MoneyStore {
     this.notify();
     return true;
   }
+
+  getDueBills(days = 3) {
+    if (!this.db || !this.db.txs) return [];
+    const today = todayISO();
+    const todayDate = new Date(today + 'T00:00:00');
+    return this.db.txs.filter(tx => {
+      if (tx.rec) return false;
+      const txDate = new Date(tx.date + 'T00:00:00');
+      const diffDays = Math.round((txDate - todayDate) / (1000 * 60 * 60 * 24));
+      return diffDays <= days;
+    }).map(tx => {
+      const txDate = new Date(tx.date + 'T00:00:00');
+      const diffDays = Math.round((txDate - todayDate) / (1000 * 60 * 60 * 24));
+      const acc = this.accById(tx.acc);
+      return {
+        tx,
+        daysUntilDue: diffDays,
+        isOverdue: diffDays < 0,
+        isDueToday: diffDays === 0,
+        accountName: acc ? acc.name : 'Conta'
+      };
+    }).sort((a, b) => a.daysUntilDue - b.daysUntilDue || a.tx.date.localeCompare(b.tx.date));
+  }
+
+  dueBillsSummary(days = 3) {
+    const items = this.getDueBills(days);
+    let payCount = 0, payTotal = 0, recCount = 0, recTotal = 0, overdueCount = 0, todayCount = 0;
+    for (const item of items) {
+      if (item.isOverdue) overdueCount++;
+      if (item.isDueToday) todayCount++;
+      if (item.tx.amt < 0) {
+        payCount++;
+        payTotal += Math.abs(item.tx.amt);
+      } else {
+        recCount++;
+        recTotal += item.tx.amt;
+      }
+    }
+    return {
+      totalCount: items.length,
+      payCount,
+      payTotal,
+      receiveCount: recCount,
+      receiveTotal: recTotal,
+      netTotal: recTotal - payTotal,
+      overdueCount,
+      todayCount
+    };
+  }
 }
 
 export const store = new MoneyStore();
