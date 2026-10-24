@@ -16,10 +16,24 @@ const collapsedSections = {
   inactive: true
 };
 
-// Initialize Service Worker
+// Initialize Service Worker with proactive update checking
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => {
+    navigator.serviceWorker.register('./sw.js').then((reg) => {
+      // Proactively check GitHub Pages for updates every time app opens
+      reg.update().catch(() => {});
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (newWorker) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showToast('🔄 Nova versão atualizada! Recarregando...', 2000);
+              setTimeout(() => window.location.reload(), 1500);
+            }
+          });
+        }
+      });
+    }).catch(err => {
       console.warn('SW registration failed:', err);
     });
   });

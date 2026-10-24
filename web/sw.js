@@ -1,5 +1,5 @@
 // OpenMoney Service Worker - Offline Cache
-const CACHE_NAME = 'openmoney-v1.0.4';
+const CACHE_NAME = 'openmoney-v1.0.5';
 const ASSETS = [
   './',
   './index.html',
