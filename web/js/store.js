@@ -175,10 +175,37 @@ export class MoneyStore {
     };
   }
 
-  // Get recent transactions across all accounts or for an account
-  getRecentTransactions(accId = null, limit = 15) {
+  // Get transactions for today (strictly date === todayISO())
+  getTodayTransactions() {
+    if (!this.db || !this.db.txs) return { transactions: [], totalIncome: 0, totalExpense: 0 };
+    const today = todayISO();
+    const todayTxs = this.db.txs.filter(t => t.date === today);
+
+    let income = 0;
+    let expense = 0;
+    for (const t of todayTxs) {
+      if (t.amt > 0) income += t.amt;
+      else expense += t.amt;
+    }
+
+    // Sort descending by id or insertion order
+    todayTxs.sort((a, b) => (b.id || '').localeCompare(a.id || ''));
+
+    return {
+      transactions: todayTxs,
+      totalIncome: income,
+      totalExpense: expense,
+      count: todayTxs.length
+    };
+  }
+
+  // Get recent transactions (defaults to transactions up to today, excluding future projected items)
+  getRecentTransactions(accId = null, limit = 15, maxDate = todayISO()) {
     if (!this.db || !this.db.txs) return [];
     let list = this.db.txs;
+    if (maxDate) {
+      list = list.filter(t => t.date <= maxDate);
+    }
     if (accId) {
       list = list.filter(t => t.acc === accId);
     }

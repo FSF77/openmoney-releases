@@ -169,25 +169,26 @@ function renderDashboard() {
     `;
   }
 
-  // Recent transactions list on Dashboard
-  const recentTxs = store.getRecentTransactions(null, 5);
+  // Today's transactions and recent past transactions (strictly <= today)
+  const todayData = store.getTodayTransactions();
   let recentHtml = '';
-  if (recentTxs.length > 0) {
+  
+  if (todayData.count > 0) {
     let items = '';
-    for (const t of recentTxs) {
+    for (const t of todayData.transactions) {
       const isNeg = t.amt < 0;
       const acc = store.accountById(t.acc);
       items += `
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-glass);">
           <div>
             <div style="font-weight:600;font-size:0.92rem;">${t.payee}</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);">${formatDateBR(t.date)} · ${acc?.name || ''} · ${t.cat || 'Sem categoria'}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${acc?.name || ''} · ${t.cat || 'Sem categoria'}</div>
           </div>
           <div style="text-align:right;">
             <div style="font-weight:700;font-size:0.95rem;" class="${isNeg ? 'text-negative' : 'text-positive'}">
               ${formatCurrency(t.amt)}
             </div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">${t.rec ? '✓ Efetivado' : 'Previsto'}</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">${t.rec ? '✓ Efetivado' : 'Pendente'}</div>
           </div>
         </div>
       `;
@@ -195,11 +196,50 @@ function renderDashboard() {
 
     recentHtml = `
       <div class="section-title" style="margin-top: 26px;">
-        <span>Últimos Lançamentos</span>
+        <span>Lançamentos de Hoje (${formatDateBR(todayISO())})</span>
+        <span style="font-size:0.8rem;text-transform:none;color:var(--text-secondary);">${todayData.count} no dia</span>
       </div>
       <div style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:8px 16px;">
         ${items}
       </div>
+    `;
+  } else {
+    // No transactions today, show empty state plus last 3 past transactions
+    const pastTxs = store.getRecentTransactions(null, 3, todayISO());
+    let pastItems = '';
+    for (const t of pastTxs) {
+      const isNeg = t.amt < 0;
+      const acc = store.accountById(t.acc);
+      pastItems += `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-glass);">
+          <div>
+            <div style="font-weight:600;font-size:0.9rem;">${t.payee}</div>
+            <div style="font-size:0.74rem;color:var(--text-muted);">${formatDateBR(t.date)} · ${acc?.name || ''}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:700;font-size:0.92rem;" class="${isNeg ? 'text-negative' : 'text-positive'}">
+              ${formatCurrency(t.amt)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    recentHtml = `
+      <div class="section-title" style="margin-top: 26px;">
+        <span>Lançamentos de Hoje</span>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:12px;color:var(--text-muted);font-size:0.85rem;text-align:center;">
+        Nenhum lançamento registrado hoje (${formatDateBR(todayISO())}).
+      </div>
+      ${pastItems ? `
+        <div class="section-title" style="margin-top: 14px;">
+          <span>Últimos Lançamentos Anteriores</span>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:8px 16px;">
+          ${pastItems}
+        </div>
+      ` : ''}
     `;
   }
 
@@ -230,9 +270,17 @@ function renderDashboard() {
       <div class="sync-banner">
         <div>
           <strong>${activeDbName}</strong>
-          <div style="color:var(--text-muted);font-size:0.75rem;">Base ativa salva no aparelho</div>
+          <div style="color:var(--text-muted);font-size:0.75rem;">Base ativa no aparelho</div>
         </div>
-        <button id="btnSyncICloud" class="sync-btn">Salvar no iCloud</button>
+        <div style="display:flex;gap:8px;">
+          <button id="btnReloadICloud" class="sync-btn" style="background:rgba(255,255,255,0.08);color:var(--text-primary);border:1px solid var(--border-glass);">
+            🔄 Atualizar do iCloud
+          </button>
+          <button id="btnSyncICloud" class="sync-btn">
+            Salvar no iCloud
+          </button>
+        </div>
+        <input type="file" id="fileInputReload" accept=".json" style="display:none;">
       </div>
 
       ${sectionsHtml}
@@ -250,6 +298,13 @@ function renderDashboard() {
   document.getElementById('btnSyncICloud').addEventListener('click', syncCurrentDatabaseToICloud);
   document.getElementById('btnOpenNewTx').addEventListener('click', openNewTransactionModal);
 
+  const btnReload = document.getElementById('btnReloadICloud');
+  const fileReload = document.getElementById('fileInputReload');
+  if (btnReload && fileReload) {
+    btnReload.addEventListener('click', () => fileReload.click());
+    fileReload.addEventListener('change', handleFileInput);
+  }
+
   // Account card click -> open details
   document.querySelectorAll('.account-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -265,12 +320,17 @@ async function handleFileInput(e) {
   if (!file) return;
 
   try {
-    const result = await dbManager.importFromFile(file);
+    const result = await dbManager.importFromFile(file, true);
     activeDbName = result.name;
     store.setDatabase(result.data);
     closeAllModals();
     renderDashboard();
-    showToast(`Base ${result.name} carregada com sucesso!`);
+
+    if (result.mergedCount > 0) {
+      showToast(`✓ Base ${result.name} atualizada (+${result.mergedCount} lançamentos mesclados)!`, 4000);
+    } else {
+      showToast(`✓ Base ${result.name} atualizada do iCloud!`);
+    }
   } catch (err) {
     alert(`Erro ao importar base: ${err.message}`);
   }

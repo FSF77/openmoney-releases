@@ -123,7 +123,7 @@ class DatabaseManager {
   }
 
   // Parses a selected JSON File from iCloud or local filesystem
-  async importFromFile(file) {
+  async importFromFile(file, mergeWithExisting = true) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = async (e) => {
@@ -142,9 +142,24 @@ class DatabaseManager {
           if (!content.v) content.v = 6;
 
           const fileName = file.name || 'openmoney.json';
+
+          // Smart Merge: Preserve any transactions created on mobile that are not yet in the imported file
+          let mergedCount = 0;
+          if (mergeWithExisting) {
+            const existingDb = await this.getDatabase(fileName);
+            if (existingDb && Array.isArray(existingDb.txs)) {
+              const incomingIds = new Set(content.txs.map(t => t.id));
+              const localPending = existingDb.txs.filter(t => !incomingIds.has(t.id));
+              if (localPending.length > 0) {
+                content.txs.push(...localPending);
+                mergedCount = localPending.length;
+              }
+            }
+          }
+
           await this.saveDatabase(fileName, content);
           await this.setActiveDbName(fileName);
-          resolve({ name: fileName, data: content });
+          resolve({ name: fileName, data: content, mergedCount });
         } catch (err) {
           reject(err);
         }
@@ -160,22 +175,19 @@ class DatabaseManager {
     const jsonStr = JSON.stringify(data);
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const filename = name.endsWith('.json') ? name : `${name}.json`;
+    const file = new File([blob], filename, { type: 'application/json' });
 
-    // Try Web Share API (native iOS Files / iCloud prompt)
-    if (navigator.canShare && navigator.canShare({ files: [new File([blob], filename, { type: 'application/json' })] })) {
+    // Try Web Share API with SINGLE file only (NO text, NO title, so iOS doesn't create extra texto.txt)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
       try {
-        const file = new File([blob], filename, { type: 'application/json' });
         await navigator.share({
-          files: [file],
-          title: filename,
-          text: 'Base de dados atualizada do OpenMoney'
+          files: [file]
         });
         return { success: true, method: 'share' };
       } catch (err) {
         if (err.name === 'AbortError') {
           return { success: false, aborted: true };
         }
-        // Fallback to direct download
       }
     }
 
