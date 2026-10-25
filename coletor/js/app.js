@@ -462,19 +462,37 @@ function startVoiceExpenseFlow() {
       }
     },
     onFinal: (finalText) => {
+      try {
+        closeAllModals();
+        const parsed = voiceExpenseEngine.parseVoiceExpense(finalText, structure);
+        openTransactionForm({
+          isVoice: true,
+          payee: parsed.payee,
+          amt: parsed.amt,
+          date: parsed.date,
+          accId: parsed.accId,
+          cat: parsed.cat,
+          isExpense: parsed.isExpense,
+          memo: parsed.memo
+        });
+        showToast('✓ Áudio interpretado com sucesso!');
+      } catch (err) {
+        console.error('Erro ao interpretar voz:', err);
+        closeAllModals();
+        openTransactionForm({
+          isVoice: true,
+          payee: finalText || 'Lançamento por Voz',
+          amt: 0,
+          date: todayISO(),
+          isExpense: true,
+          memo: `Voz: "${finalText}"`
+        });
+        showToast('⚠️ Preencha os campos da despesa.');
+      }
+    },
+    onEmpty: () => {
       closeAllModals();
-      const parsed = voiceExpenseEngine.parseVoiceExpense(finalText, structure);
-      openTransactionForm({
-        isVoice: true,
-        payee: parsed.payee,
-        amt: parsed.amt,
-        date: parsed.date,
-        accId: parsed.accId,
-        cat: parsed.cat,
-        isExpense: parsed.isExpense,
-        memo: parsed.memo
-      });
-      showToast('✓ Áudio interpretado com sucesso!');
+      showToast('Nenhuma fala capturada. Toque no microfone e tente novamente.', 3500);
     },
     onError: (err) => {
       closeAllModals();
@@ -686,17 +704,29 @@ function setupEventListeners() {
 
   const btnCancelVoice = document.getElementById('btnCancelVoice');
   if (btnCancelVoice) {
-    btnCancelVoice.addEventListener('click', () => {
-      voiceExpenseEngine.stopListening();
+    const handleCancel = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      voiceExpenseEngine.cancelListening();
       closeAllModals();
-    });
+    };
+    btnCancelVoice.addEventListener('click', handleCancel);
+    btnCancelVoice.addEventListener('touchend', handleCancel);
   }
 
   const btnStopVoice = document.getElementById('btnStopVoice');
   if (btnStopVoice) {
-    btnStopVoice.addEventListener('click', () => {
+    const handleStop = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       voiceExpenseEngine.stopListening();
-    });
+    };
+    btnStopVoice.addEventListener('click', handleStop);
+    btnStopVoice.addEventListener('touchend', handleStop);
   }
 
   // Action: Manual Transaction

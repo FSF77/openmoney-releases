@@ -1,5 +1,5 @@
 // OpenMoney Coletor Service Worker - Offline Cache
-const CACHE_NAME = 'openmoney-coletor-v1.0.3';
+const CACHE_NAME = 'openmoney-coletor-v1.0.4';
 const ASSETS = [
   './',
   './index.html',
@@ -41,22 +41,36 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
+  const url = e.request.url;
+  const isCodeOrDoc = url.endsWith('.js') || url.includes('.js?') || url.endsWith('.html') || url.endsWith('/') || e.request.mode === 'navigate';
+
+  if (isCodeOrDoc) {
+    // Network First for scripts and HTML to ensure immediate code delivery
+    e.respondWith(
+      fetch(e.request)
+        .then((res) => {
+          if (res && res.status === 200) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => caches.match(e.request).then(cached => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Cache First for icons, manifest, static assets
   e.respondWith(
     caches.match(e.request).then((cached) => {
-      if (cached) {
-        fetch(e.request).then((res) => {
-          if (res && res.status === 200) {
-            caches.open(CACHE_NAME).then((c) => c.put(e.request, res));
-          }
-        }).catch(() => {});
-        return cached;
-      }
+      if (cached) return cached;
       return fetch(e.request).then((res) => {
-        if (!res || res.status !== 200 || res.type !== 'basic') return res;
-        const clone = res.clone();
-        caches.open(CACHE_NAME).then((c) => c.put(e.request, clone));
+        if (res && res.status === 200) {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(e.request, clone));
+        }
         return res;
       });
-    }).catch(() => caches.match('./index.html'))
+    })
   );
 });
