@@ -42,12 +42,18 @@
   <!-- Main Container -->
   <main class="container">
 
-    <!-- Action Buttons (Escanear e Manual) -->
+    <!-- Action Buttons (Escanear, Voz e Manual) -->
     <div class="action-grid">
       <button id="btnScanReceipt" class="btn-action-main btn-scan">
         <div class="btn-action-icon">📷</div>
         <div class="btn-action-label">Escanear Recibo</div>
         <div class="btn-action-sub">OCR automático</div>
+      </button>
+
+      <button id="btnVoiceTx" class="btn-action-main btn-voice">
+        <div class="btn-action-icon">🎙️</div>
+        <div class="btn-action-label">Falar Gasto</div>
+        <div class="btn-action-sub">Comando de voz</div>
       </button>
 
       <button id="btnManualTx" class="btn-action-main btn-manual">
@@ -198,6 +204,29 @@
         <div class="spinner"></div>
         <div style="font-weight:700;font-size:1.1rem;margin-bottom:6px;">Processando Comprovante</div>
         <div id="ocrProgressStatus" style="font-size:0.84rem;color:var(--text-muted);">Iniciando OCR local no aparelho...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Reconhecimento de Voz Ativo -->
+  <div id="modalVoiceListening" class="modal-overlay">
+    <div class="sheet" style="max-height: 48vh; text-align: center;">
+      <div class="voice-modal-view">
+        <div class="voice-mic-halo">
+          <div class="voice-mic-pulse"></div>
+          <div class="voice-mic-core">🎙️</div>
+        </div>
+        <div style="font-weight: 700; font-size: 1.15rem; margin-top: 14px; margin-bottom: 4px;">Ouvindo... pode falar</div>
+        <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px;">Ex: "Almoço 45 reais no cartão Inter" ou "Farmácia 38 e 90"</div>
+        
+        <div id="voiceTranscriptPreview" class="voice-transcript-box">
+          Fale agora...
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button id="btnCancelVoice" class="btn-cancel-voice" style="flex:1;">Cancelar</button>
+          <button id="btnStopVoice" class="btn-stop-voice" style="flex:1.5;">✓ Concluir Fala</button>
+        </div>
       </div>
     </div>
   </div>

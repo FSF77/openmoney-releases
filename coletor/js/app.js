@@ -1,6 +1,7 @@
 // OpenMoney Coletor - Mobile Application Controller
 import { coletorStorage } from './db.js';
 import { receiptScanner } from './ocr.js';
+import { voiceExpenseEngine } from './voice.js';
 import { formatCurrency, parseCurrencyToCents, todayISO, formatDateBR, uid, SEP } from './models.js';
 
 let currentTxType = 'despesa';
@@ -311,7 +312,13 @@ function openTransactionForm(preset = null) {
   accSelect.innerHTML = accOpts;
 
   if (preset) {
-    title.textContent = preset.isScan ? 'Confirmar Dados do Recibo' : 'Novo Lançamento';
+    if (preset.isScan) {
+      title.textContent = 'Confirmar Dados do Recibo';
+    } else if (preset.isVoice) {
+      title.textContent = 'Confirmar Lançamento por Voz';
+    } else {
+      title.textContent = 'Novo Lançamento';
+    }
     txIdInput.value = preset.id || '';
 
     if (preset.thumbnail) {
@@ -334,12 +341,21 @@ function openTransactionForm(preset = null) {
     dateInput.value = preset.date || todayISO();
     memoInput.value = preset.memo || '';
 
+    // Set account if passed
+    if (preset.accId && accSelect) {
+      accSelect.value = preset.accId;
+    }
+
     // Set initial type
     const initialType = preset.isExpense === false ? 'receita' : 'despesa';
     setTransactionType(initialType);
 
-    // Auto-match category based on payee
-    if (preset.payee && structure.frequentPayees) {
+    // If category explicitly passed (e.g. from voice parser)
+    if (preset.cat) {
+      const catSelect = document.getElementById('formCategory');
+      if (catSelect) catSelect.value = preset.cat;
+    } else if (preset.payee && structure.frequentPayees) {
+      // Auto-match category based on payee
       const norm = preset.payee.toLowerCase().trim();
       const match = structure.frequentPayees.find(p => p.payee.toLowerCase().trim() === norm) ||
                     structure.frequentPayees.find(p => p.payee.toLowerCase().includes(norm));
@@ -404,6 +420,54 @@ async function handleReceiptImageSelected(e) {
   } finally {
     e.target.value = ''; // reset input
   }
+}
+
+// Handle Voice Expense Flow
+function startVoiceExpenseFlow() {
+  const structure = coletorStorage.getStructure();
+  if (!structure) {
+    openSetupModal();
+    return;
+  }
+
+  if (!voiceExpenseEngine.isSupported()) {
+    alert('O reconhecimento de voz pelo navegador não está ativo. Dica: você pode abrir a tela de "Novo Lançamento", tocar no campo e usar a tecla de microfone do teclado do seu iPhone para ditar diretamente!');
+    return;
+  }
+
+  const modal = document.getElementById('modalVoiceListening');
+  const preview = document.getElementById('voiceTranscriptPreview');
+  if (preview) preview.textContent = 'Fale agora...';
+
+  openModal(modal);
+
+  voiceExpenseEngine.startListening({
+    onStart: () => {
+      if (preview) preview.textContent = 'Ouvindo... pode falar';
+    },
+    onTranscript: (interimText) => {
+      if (preview) preview.textContent = `"${interimText}"`;
+    },
+    onFinal: (finalText) => {
+      closeAllModals();
+      const parsed = voiceExpenseEngine.parseVoiceExpense(finalText, structure);
+      openTransactionForm({
+        isVoice: true,
+        payee: parsed.payee,
+        amt: parsed.amt,
+        date: parsed.date,
+        accId: parsed.accId,
+        cat: parsed.cat,
+        isExpense: parsed.isExpense,
+        memo: parsed.memo
+      });
+      showToast('✓ Áudio interpretado com sucesso!');
+    },
+    onError: (err) => {
+      closeAllModals();
+      showToast(`⚠️ ${err.message}`, 4000);
+    }
+  });
 }
 
 // Handle OpenMoney Structure JSON file selection
@@ -598,6 +662,27 @@ function setupEventListeners() {
   if (btnScanReceipt && fileCameraInput) {
     btnScanReceipt.addEventListener('click', () => fileCameraInput.click());
     fileCameraInput.addEventListener('change', handleReceiptImageSelected);
+  }
+
+  // Action: Voice Expense Flow
+  const btnVoiceTx = document.getElementById('btnVoiceTx');
+  if (btnVoiceTx) {
+    btnVoiceTx.addEventListener('click', startVoiceExpenseFlow);
+  }
+
+  const btnCancelVoice = document.getElementById('btnCancelVoice');
+  if (btnCancelVoice) {
+    btnCancelVoice.addEventListener('click', () => {
+      voiceExpenseEngine.stopListening();
+      closeAllModals();
+    });
+  }
+
+  const btnStopVoice = document.getElementById('btnStopVoice');
+  if (btnStopVoice) {
+    btnStopVoice.addEventListener('click', () => {
+      voiceExpenseEngine.stopListening();
+    });
   }
 
   // Action: Manual Transaction
