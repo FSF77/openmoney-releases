@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.29** (Build 47)
-> *Publicada em: 25/10/2026 às 11:03*
+## ⚡ Última Versão Disponível: **v1.0.30** (Build 49)
+> *Publicada em: 25/10/2026 às 17:06*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.29.zip** | Pacote oficial v1.0.29 para macOS | [📥 Download v1.0.29](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.29.zip) | ~4 MB |
+| **OpenMoney-1.0.30.zip** | Pacote oficial v1.0.30 para macOS | [📥 Download v1.0.30](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.30.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-b7d0053cf6b8155ccce8c02e07709a89d13e99c15f8846a80f5767c18a4893d4  OpenMoney-1.0.29.zip
+f804d04bc0777d009396a38f1e50b6dacb2e89388230073d1a3a1dcf85413867  OpenMoney-1.0.30.zip
 ```
 
 ### 📝 Notas desta Versão
-OpenMoney Coletor Mobile com Scanner OCR, autocompletar inteligente e janela de revisão de importação no macOS (v1.0.29)
+Novas opções para lançamentos recorrentes: Quinzenal, Bimestral, Trimestral e Semestral com horizontes adaptativos de projeção e suporte completo no macOS e iOS.
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.29.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.29.zip).
+1. Baixe o pacote [OpenMoney-1.0.30.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.30.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
