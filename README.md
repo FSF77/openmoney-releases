@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.27** (Build 43)
-> *Publicada em: 24/10/2026 às 20:50*
+## ⚡ Última Versão Disponível: **v1.0.28** (Build 45)
+> *Publicada em: 24/10/2026 às 22:05*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.27.zip** | Pacote oficial v1.0.27 para macOS | [📥 Download v1.0.27](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.27.zip) | ~3 MB |
+| **OpenMoney-1.0.28.zip** | Pacote oficial v1.0.28 para macOS | [📥 Download v1.0.28](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.28.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-472f07fb639879320724a9c64454819597ae1845bdb510dd792341867cdd965f  OpenMoney-1.0.27.zip
+01bf1796b5404a81762ac82d87e412cc841ebe13c700042034682c7b8f5c13a0  OpenMoney-1.0.28.zip
 ```
 
 ### 📝 Notas desta Versão
-Atualização completa do README.md e sincronização do manual integrado de ajuda v1.0.27.
+Exportação e impressão em PDF A4 de Fatura de Cartão de Crédito e Extrato Mensal da Conta com saldos inicial, final e previsto
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.27.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.27.zip).
+1. Baixe o pacote [OpenMoney-1.0.28.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.28.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
