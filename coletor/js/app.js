@@ -47,6 +47,9 @@ function closeAllModals() {
   document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
   const dropdown = document.getElementById('payeeDropdown');
   if (dropdown) dropdown.classList.remove('show');
+  if (voiceExpenseEngine && voiceExpenseEngine.isListening) {
+    voiceExpenseEngine.cancelListening();
+  }
 }
 
 // App Initialization
@@ -437,16 +440,26 @@ function startVoiceExpenseFlow() {
 
   const modal = document.getElementById('modalVoiceListening');
   const preview = document.getElementById('voiceTranscriptPreview');
-  if (preview) preview.textContent = 'Fale agora...';
+  if (preview) {
+    preview.textContent = 'Fale agora...';
+    preview.style.fontStyle = 'italic';
+    preview.style.opacity = '0.7';
+  }
 
   openModal(modal);
 
   voiceExpenseEngine.startListening({
     onStart: () => {
-      if (preview) preview.textContent = 'Ouvindo... pode falar';
+      if (preview) {
+        preview.textContent = 'Ouvindo... pode falar';
+      }
     },
     onTranscript: (interimText) => {
-      if (preview) preview.textContent = `"${interimText}"`;
+      if (preview) {
+        preview.textContent = `"${interimText}"`;
+        preview.style.fontStyle = 'normal';
+        preview.style.opacity = '1';
+      }
     },
     onFinal: (finalText) => {
       closeAllModals();
@@ -465,7 +478,8 @@ function startVoiceExpenseFlow() {
     },
     onError: (err) => {
       closeAllModals();
-      showToast(`⚠️ ${err.message}`, 4000);
+      const msg = err?.message || 'Reconhecimento de voz finalizado.';
+      showToast(`⚠️ ${msg}`, 4000);
     }
   });
 }

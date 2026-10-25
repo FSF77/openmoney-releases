@@ -1,24 +1,13 @@
 // OpenMoney Coletor - Voice Recognition & Local NLP Parser Engine
 import { normalizeStr, todayISO, parseCurrencyToCents } from './models.js';
 
-// Convert number words in Portuguese to numeric string
-const PT_NUMBER_WORDS = {
-  'zero': 0, 'um': 1, 'uma': 1, 'dois': 2, 'duas': 2, 'três': 3, 'tres': 3,
-  'quatro': 4, 'cinco': 5, 'seis': 6, 'sete': 7, 'oito': 8, 'nove': 9,
-  'dez': 10, 'onze': 11, 'doze': 12, 'treze': 13, 'quatorze': 14, 'catorze': 14,
-  'quinze': 15, 'dezesseis': 16, 'dezessete': 17, 'dezoito': 18, 'dezenove': 19,
-  'vinte': 20, 'trinta': 30, 'quarenta': 40, 'cinquenta': 50,
-  'sessenta': 60, 'setenta': 70, 'oitenta': 80, 'noventa': 90,
-  'cem': 100, 'cento': 100, 'duzentos': 200, 'trezentos': 300,
-  'quatrocentos': 400, 'quinhentos': 500, 'seiscentos': 600,
-  'setecentos': 700, 'oitocentos': 800, 'novecentos': 900,
-  'mil': 1000
-};
-
 export class VoiceExpenseEngine {
   constructor() {
     this.recognition = null;
     this.isListening = false;
+    this.hasFinished = false;
+    this.currentTranscript = '';
+    this.callbacks = null;
   }
 
   // Check if browser supports Web Speech API
@@ -26,74 +15,161 @@ export class VoiceExpenseEngine {
     return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
   }
 
+  // Force clean up any existing recognition instance and release mic
+  cleanup() {
+    if (this.recognition) {
+      try {
+        this.recognition.onstart = null;
+        this.recognition.onresult = null;
+        this.recognition.onerror = null;
+        this.recognition.onend = null;
+        this.recognition.abort();
+      } catch (e) {}
+      this.recognition = null;
+    }
+    this.isListening = false;
+    this.hasFinished = false;
+    this.currentTranscript = '';
+    this.callbacks = null;
+  }
+
   // Start Voice Recognition
   startListening({ onTranscript, onFinal, onError, onStart, onEnd }) {
+    this.cleanup();
+
     if (!this.isSupported()) {
       if (onError) onError(new Error('Reconhecimento de voz não suportado neste navegador.'));
       return;
     }
 
+    this.callbacks = { onTranscript, onFinal, onError, onStart, onEnd };
+    this.hasFinished = false;
+    this.currentTranscript = '';
+
     const SpeechClass = window.SpeechRecognition || window.webkitSpeechRecognition;
-    this.recognition = new SpeechClass();
+    try {
+      this.recognition = new SpeechClass();
+    } catch (e) {
+      if (onError) onError(new Error('Não foi possível iniciar o microfone no navegador.'));
+      return;
+    }
+
     this.recognition.lang = 'pt-BR';
-    this.recognition.continuous = false;
+    this.recognition.continuous = true;
     this.recognition.interimResults = true;
     this.recognition.maxAlternatives = 1;
 
-    let finalSpokenText = '';
+    let finalParts = [];
 
     this.recognition.onstart = () => {
       this.isListening = true;
-      if (onStart) onStart();
+      if (this.callbacks?.onStart) this.callbacks.onStart();
     };
 
     this.recognition.onresult = (event) => {
       let interim = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const item = event.results[i];
-        const text = item[0].transcript;
+        const text = item[0]?.transcript || '';
         if (item.isFinal) {
-          finalSpokenText += text + ' ';
+          finalParts.push(text);
         } else {
-          interim += text;
+          interim = text;
         }
       }
-      const current = (finalSpokenText + interim).trim();
-      if (onTranscript) onTranscript(current);
+      const combined = (finalParts.join(' ') + ' ' + interim).trim().replace(/\s+/g, ' ');
+      if (combined) {
+        this.currentTranscript = combined;
+        if (this.callbacks?.onTranscript) {
+          this.callbacks.onTranscript(combined);
+        }
+      }
     };
 
     this.recognition.onerror = (event) => {
-      this.isListening = false;
-      if (event.error === 'no-speech') {
-        if (onError) onError(new Error('Nenhuma fala detectada. Toque no microfone e tente novamente.'));
-      } else if (event.error === 'not-allowed') {
-        if (onError) onError(new Error('Permissão de microfone negada. Conceda permissão no Safari para usar o comando de voz.'));
-      } else {
-        if (onError) onError(new Error(`Erro ao reconhecer voz: ${event.error}`));
+      const err = event.error || '';
+      // 'aborted' occurs when user taps stop or cancel - ignore safely
+      if (err === 'aborted') {
+        return;
+      }
+
+      if (err === 'no-speech') {
+        // If we already have captured text, finish successfully instead of failing
+        if (this.currentTranscript) {
+          this.commitSpeech();
+          return;
+        }
+        if (this.callbacks?.onError) {
+          this.callbacks.onError(new Error('Nenhuma fala detectada. Toque no microfone e tente novamente.'));
+        }
+        return;
+      }
+
+      if (err === 'not-allowed') {
+        if (this.callbacks?.onError) {
+          this.callbacks.onError(new Error('Permissão de microfone negada no Safari. Verifique em Ajustes > Safari > Microfone.'));
+        }
+        return;
+      }
+
+      // If we already captured text, commit it despite minor network/audio warnings
+      if (this.currentTranscript) {
+        this.commitSpeech();
+        return;
+      }
+
+      if (err && this.callbacks?.onError) {
+        this.callbacks.onError(new Error(`Reconhecimento encerrado (${err}). Tente novamente.`));
       }
     };
 
     this.recognition.onend = () => {
       this.isListening = false;
-      const text = finalSpokenText.trim();
-      if (text && onFinal) {
-        onFinal(text);
+      if (!this.hasFinished) {
+        if (this.currentTranscript) {
+          this.commitSpeech();
+        } else if (this.callbacks?.onEnd) {
+          this.callbacks.onEnd();
+        }
       }
-      if (onEnd) onEnd();
     };
 
     try {
       this.recognition.start();
     } catch (err) {
-      if (onError) onError(err);
+      this.cleanup();
+      if (onError) onError(new Error('Microfone ocupado ou reiniciando. Tente novamente em 1 segundo.'));
     }
   }
 
-  // Stop listening manually
-  stopListening() {
-    if (this.recognition && this.isListening) {
-      this.recognition.stop();
+  // Commit what was captured and trigger completion
+  commitSpeech() {
+    if (this.hasFinished) return;
+    this.hasFinished = true;
+
+    const text = this.currentTranscript.trim();
+    const onFinal = this.callbacks?.onFinal;
+
+    this.cleanup();
+
+    if (text && onFinal) {
+      onFinal(text);
     }
+  }
+
+  // Stop listening manually (called when user clicks Concluir Fala)
+  stopListening() {
+    if (this.currentTranscript.trim()) {
+      this.commitSpeech();
+    } else {
+      this.cleanup();
+    }
+  }
+
+  // Cancel flow (called when user clicks Cancelar)
+  cancelListening() {
+    this.hasFinished = true;
+    this.cleanup();
   }
 
   // Parse natural language spoken phrase into OpenMoney fields
