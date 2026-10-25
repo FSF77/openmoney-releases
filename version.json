@@ -1,10 +1,10 @@
 {
-  "version": "1.0.28",
-  "build": 46,
-  "releaseDate": "2026-10-24",
-  "title": "OpenMoney v1.0.28",
-  "notes": "Refinamento do layout de Fatura de Cartão e Extrato Mensal em PDF: ícone conciliado antes da data, notas em segunda linha, saldo acumulado por quebra de dia e valores sem R$ em linha única",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.28.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.28",
-  "sha256": "18b8e1d2dcd152e545b26d67cf88c939835bf68e51257efaabfc36fac47be5a0"
+  "version": "1.0.29",
+  "build": 47,
+  "releaseDate": "2026-10-25",
+  "title": "OpenMoney v1.0.29",
+  "notes": "OpenMoney Coletor Mobile com Scanner OCR, autocompletar inteligente e janela de revisão de importação no macOS (v1.0.29)",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.29.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.29",
+  "sha256": "b7d0053cf6b8155ccce8c02e07709a89d13e99c15f8846a80f5767c18a4893d4"
 }
