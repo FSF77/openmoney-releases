@@ -21,14 +21,22 @@
 
   <!-- App Header -->
   <header class="app-header">
-    <div class="brand">
-      <img src="icons/icon-192.png" alt="OpenMoney" class="brand-icon">
-      <div class="brand-title">OpenMoney</div>
-      <span class="brand-badge">Coletor</span>
+    <div class="header-top-row">
+      <div class="brand">
+        <img src="icons/icon-192.png" alt="OpenMoney" class="brand-icon">
+        <div class="brand-title">OpenMoney</div>
+        <span class="brand-badge">Coletor</span>
+      </div>
+      <button id="btnHeaderSetup" class="btn-gear-setup" title="Configurar Base">
+        <span>⚙️</span>
+      </button>
     </div>
-    <button id="btnHeaderSetup" class="btn-header-setup">
-      <span id="headerBaseName">Vincular Base</span> ⚙️
-    </button>
+    <!-- Nome do arquivo na linha de baixo para visualização completa -->
+    <div class="header-base-row" id="headerBaseRow">
+      <span class="base-status-dot" id="headerBaseDot"></span>
+      <span id="headerBaseName" class="base-file-name">Nenhuma base vinculada</span>
+      <span class="base-change-hint">Trocar</span>
+    </div>
   </header>
 
   <!-- Main Container -->
@@ -132,16 +140,25 @@
         </div>
       </div>
 
+      <!-- Tipo de Lançamento (Despesa / Receita) -->
+      <div class="segmented-control">
+        <button type="button" class="segmented-btn active despesa" id="btnTypeExpense" data-type="despesa">Despesa</button>
+        <button type="button" class="segmented-btn" id="btnTypeIncome" data-type="receita">Receita</button>
+      </div>
+
       <!-- Valor -->
       <div class="form-group">
         <label class="form-label">Valor (R$)</label>
         <input type="text" id="formAmount" class="form-input amount-input" placeholder="0,00" inputmode="decimal">
       </div>
 
-      <!-- Favorecido / Local -->
-      <div class="form-group">
+      <!-- Favorecido / Local com Autocomplete Inteligente -->
+      <div class="form-group" id="formPayeeGroup">
         <label class="form-label">Estabelecimento / Favorecido</label>
-        <input type="text" id="formPayee" class="form-input" placeholder="Ex: Mercado, Padaria, Posto">
+        <div class="autocomplete-wrapper">
+          <input type="text" id="formPayee" class="form-input" placeholder="Ex: Mercado, Padaria, Posto, Salário" autocomplete="off" autocapitalize="words">
+          <div id="payeeDropdown" class="autocomplete-dropdown"></div>
+        </div>
       </div>
 
       <!-- Conta -->

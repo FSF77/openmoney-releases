@@ -255,13 +255,11 @@ export class MoneyStore {
     const parents = cats.filter(c => !c.parent || c.parent.trim() === '');
     
     for (const p of parents) {
+      // Always include the main/parent category itself
+      paths.push(p.name);
       const subs = cats.filter(c => c.parent === p.name);
-      if (subs.length === 0) {
-        paths.push(p.name);
-      } else {
-        for (const s of subs) {
-          paths.push(`${p.name}${SEP}${s.name}`);
-        }
+      for (const s of subs) {
+        paths.push(`${p.name}${SEP}${s.name}`);
       }
     }
     return paths.sort((a, b) => a.localeCompare(b, 'pt-BR'));

@@ -1,4 +1,6 @@
 // OpenMoney Coletor - Local Storage & Export Engine
+import { normalizeStr } from './models.js';
+
 const STORAGE_KEY_STRUCTURE = 'om_coletor_structure';
 const STORAGE_KEY_PENDING = 'om_coletor_pending_txs';
 
@@ -18,6 +20,24 @@ class ColetorStorage {
     localStorage.setItem(STORAGE_KEY_STRUCTURE, JSON.stringify(structure));
   }
 
+  // Live Autocomplete for Payee (as user types)
+  searchPayees(query) {
+    if (!query) return [];
+    const normQ = normalizeStr(query);
+    if (!normQ) return [];
+    const structure = this.getStructure();
+    if (!structure || !Array.isArray(structure.frequentPayees)) return [];
+
+    const matches = [];
+    for (const item of structure.frequentPayees) {
+      const normP = normalizeStr(item.payee);
+      if (normP.includes(normQ)) {
+        matches.push(item);
+      }
+    }
+    return matches.slice(0, 15);
+  }
+
   // Import structure from openmoney.json (lightweight extraction)
   importFromFullDB(fullDb, fileName = 'openmoney.json') {
     if (!fullDb || !Array.isArray(fullDb.accounts)) {
@@ -26,11 +46,11 @@ class ColetorStorage {
 
     const txs = Array.isArray(fullDb.txs) ? fullDb.txs : [];
 
-    // Calculate reference balance for each account
+    // Calculate current reconciled balance for each account (only t.rec === true)
     const accounts = fullDb.accounts.map(acc => {
       let balance = acc.opening || 0;
       for (const t of txs) {
-        if (t.acc === acc.id) {
+        if (t.acc === acc.id && t.rec === true) {
           balance += t.amt;
         }
       }
@@ -47,7 +67,7 @@ class ColetorStorage {
     // Extract categories
     const cats = Array.isArray(fullDb.cats) ? fullDb.cats : [];
 
-    // Extract frequent payees
+    // Extract frequent payees with their latest category and type
     const payeeMap = new Map();
     for (const t of txs) {
       if (t.auto || t.xfer || !t.payee) continue;
@@ -74,8 +94,11 @@ class ColetorStorage {
     }
 
     const frequentPayees = Array.from(payeeMap.values())
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 50);
+      .sort((a, b) => {
+        if (b.count !== a.count) return b.count - a.count;
+        return (b.lastDate || '').localeCompare(a.lastDate || '');
+      })
+      .slice(0, 1000);
 
     const structure = {
       baseName: fileName,
@@ -159,8 +182,7 @@ class ColetorStorage {
         amt: t.amt,
         rec: t.rec !== false,
         peer: t.peer || null,
-        xfer: t.xfer || null,
-        receiptThumb: t.receiptThumb || null
+        xfer: t.xfer || null
       }))
     };
 

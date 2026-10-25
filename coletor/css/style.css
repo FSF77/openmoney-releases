@@ -68,6 +68,38 @@
   .form-input:focus, .form-select:focus {
     background: #ffffff !important;
   }
+
+  .header-base-row {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .base-file-name {
+    color: #0f172a !important;
+  }
+
+  .btn-gear-setup {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .segmented-control {
+    background: rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .autocomplete-dropdown {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .autocomplete-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .autocomplete-item:active {
+    background: rgba(0, 0, 0, 0.05) !important;
+  }
 }
 
 * {
@@ -102,14 +134,21 @@ body.modal-open {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(10, 14, 23, 0.85);
+  background: rgba(10, 14, 23, 0.90);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-glass);
-  padding: 12px 18px;
+  padding: 10px 18px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .brand {
@@ -119,8 +158,8 @@ body.modal-open {
 }
 
 .brand-icon {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
 }
 
@@ -140,18 +179,74 @@ body.modal-open {
   text-transform: uppercase;
 }
 
-.btn-header-setup {
+.btn-gear-setup {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-glass);
   color: var(--text-secondary);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 16px;
+  font-size: 1.05rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-gear-setup:active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.94);
+}
+
+.header-base-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.header-base-row:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.base-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--om-green);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+}
+
+.base-status-dot.disconnected {
+  background: var(--om-orange);
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+}
+
+.base-file-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.base-change-hint {
+  font-size: 0.70rem;
+  font-weight: 600;
+  color: var(--om-blue);
+  background: var(--om-blue-bg);
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 
 /* Container */
@@ -537,3 +632,94 @@ body.modal-open {
 
 .text-positive { color: var(--om-green); }
 .text-negative { color: var(--om-red); }
+
+/* Segmented Control (Despesa / Receita) */
+.segmented-control {
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  margin-bottom: 16px;
+}
+
+.segmented-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 9px 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: calc(var(--radius-md) - 3px);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.segmented-btn.active.despesa {
+  background: var(--om-red);
+  color: #fff;
+}
+
+.segmented-btn.active.receita {
+  background: var(--om-green);
+  color: #fff;
+}
+
+/* Autocomplete for Payee */
+.autocomplete-wrapper {
+  position: relative;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: rgba(18, 25, 41, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 150;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  display: none;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.autocomplete-dropdown.show {
+  display: block;
+}
+
+.autocomplete-item {
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.autocomplete-item:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.autocomplete-item .name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.autocomplete-item .cat-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: 10px;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

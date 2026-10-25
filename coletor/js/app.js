@@ -3,6 +3,8 @@ import { coletorStorage } from './db.js';
 import { receiptScanner } from './ocr.js';
 import { formatCurrency, parseCurrencyToCents, todayISO, formatDateBR, uid, SEP } from './models.js';
 
+let currentTxType = 'despesa';
+
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -42,6 +44,8 @@ function openModal(modal) {
 function closeAllModals() {
   document.body.classList.remove('modal-open');
   document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+  const dropdown = document.getElementById('payeeDropdown');
+  if (dropdown) dropdown.classList.remove('show');
 }
 
 // App Initialization
@@ -51,7 +55,6 @@ function initApp() {
 
   const structure = coletorStorage.getStructure();
   if (!structure) {
-    // Open setup modal on first run
     openSetupModal();
   }
 }
@@ -61,26 +64,36 @@ function renderApp() {
   const structure = coletorStorage.getStructure();
   const pending = coletorStorage.getPendingTransactions();
 
-  // 1. Header Info
+  // 1. Header Info (File Name on its own row)
   const headerBaseName = document.getElementById('headerBaseName');
+  const headerBaseDot = document.getElementById('headerBaseDot');
   if (headerBaseName) {
-    headerBaseName.textContent = structure ? structure.baseName : 'Vincular Base';
+    headerBaseName.textContent = structure ? structure.baseName : 'Nenhuma base vinculada';
+  }
+  if (headerBaseDot) {
+    if (structure) {
+      headerBaseDot.classList.remove('disconnected');
+    } else {
+      headerBaseDot.classList.add('disconnected');
+    }
   }
 
-  // 2. Accounts Scroll
+  // 2. Accounts Carousel (Reconciled Balance + Pending local changes)
   const accountsContainer = document.getElementById('accountsScrollContainer');
   if (accountsContainer) {
     if (!structure || !structure.accounts || structure.accounts.length === 0) {
       accountsContainer.innerHTML = `
         <div style="font-size:0.8rem;color:var(--text-muted);padding:6px 0;">
-          Toque em <strong>Vincular Base</strong> para carregar suas contas e saldos.
+          Toque em <strong>Trocar Base</strong> acima para carregar suas contas e saldos conciliados.
         </div>
       `;
     } else {
-      // Calculate pending expenses for each account
+      // Calculate pending transactions for each account
       const pendingByAcc = {};
       for (const t of pending) {
-        pendingByAcc[t.acc] = (pendingByAcc[t.acc] || 0) + t.amt;
+        if (t.rec !== false) {
+          pendingByAcc[t.acc] = (pendingByAcc[t.acc] || 0) + t.amt;
+        }
       }
 
       let accHtml = '';
@@ -116,23 +129,20 @@ function renderApp() {
         <div style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:24px 16px;text-align:center;color:var(--text-muted);font-size:0.88rem;">
           <div style="font-size:1.8rem;margin-bottom:8px;">📥</div>
           Nenhum lançamento pendente na fila.<br>
-          Use <strong>Escanear</strong> ou <strong>Novo Lançamento</strong> para registrar gastos na rua.
+          Use <strong>Escanear</strong> ou <strong>Novo Lançamento</strong> para registrar compras na rua.
         </div>
       `;
       if (exportCard) exportCard.style.display = 'none';
     } else {
       let html = '';
-      let totalPending = 0;
-
       for (const t of pending) {
-        totalPending += t.amt;
         const isNeg = t.amt < 0;
         const acc = structure?.accounts?.find(a => a.id === t.acc);
 
         html += `
           <div class="pending-card">
             <div class="pending-info">
-              ${t.receiptThumb ? `<img src="${t.receiptThumb}" class="pending-thumb" alt="Recibo">` : '<div style="font-size:1.4rem;">🧾</div>'}
+              <div style="font-size:1.4rem;">🧾</div>
               <div class="pending-details">
                 <div class="name">${t.payee}</div>
                 <div class="sub">${formatDateBR(t.date)} · ${acc?.name || 'Conta'} · ${t.cat || 'Geral'}</div>
@@ -187,7 +197,90 @@ function openSetupModal() {
   openModal(document.getElementById('modalSetup'));
 }
 
-// Open Form Modal (New or Edit)
+// Transaction Type Switcher (Despesa / Receita)
+function setTransactionType(type) {
+  currentTxType = type;
+  const btnExpense = document.getElementById('btnTypeExpense');
+  const btnIncome = document.getElementById('btnTypeIncome');
+  const amtInput = document.getElementById('formAmount');
+
+  if (btnExpense && btnIncome) {
+    btnExpense.className = `segmented-btn ${type === 'despesa' ? 'active despesa' : ''}`;
+    btnIncome.className = `segmented-btn ${type === 'receita' ? 'active receita' : ''}`;
+  }
+
+  if (amtInput) {
+    amtInput.style.color = (type === 'despesa' ? 'var(--om-red)' : 'var(--om-green)');
+  }
+
+  // Update categories matching the type
+  const catSelect = document.getElementById('formCategory');
+  const curVal = catSelect ? catSelect.value : '';
+  renderCategoryOptions(curVal, type);
+}
+
+// Render Category Options (INCLUDES PARENT/PRINCIPAL CATEGORY!)
+function renderCategoryOptions(selectedCat = '', type = null) {
+  const catSelect = document.getElementById('formCategory');
+  if (!catSelect) return;
+
+  const structure = coletorStorage.getStructure();
+  if (!structure || !Array.isArray(structure.cats)) {
+    catSelect.innerHTML = '<option value="">(Sem categoria)</option>';
+    return;
+  }
+
+  const catTargetType = type === 'receita' ? 'Receita' : (type === 'despesa' ? 'Despesa' : null);
+  let cats = structure.cats;
+  if (catTargetType) {
+    cats = cats.filter(c => !c.type || c.type === catTargetType);
+  }
+
+  let catOpts = '<option value="">(Sem categoria)</option>';
+  const parents = cats
+    .filter(c => !c.parent || c.parent.trim() === '')
+    .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+
+  for (const p of parents) {
+    const subs = cats
+      .filter(c => c.parent === p.name)
+      .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+
+    if (subs.length === 0) {
+      catOpts += `<option value="${p.name}">${p.name}</option>`;
+    } else {
+      // Always allow selecting the parent category itself!
+      catOpts += `<option value="${p.name}" style="font-weight:700;">📁 ${p.name} (Principal)</option>`;
+      for (const s of subs) {
+        const full = `${p.name}${SEP}${s.name}`;
+        catOpts += `<option value="${full}">&nbsp;&nbsp;&nbsp;↳ ${s.name}</option>`;
+      }
+    }
+  }
+
+  catSelect.innerHTML = catOpts;
+  if (selectedCat) {
+    catSelect.value = selectedCat;
+  }
+}
+
+// Apply selected Payee from Autocomplete
+function applyPayeeSelection(payeeName, catName, isExpense) {
+  const payeeInput = document.getElementById('formPayee');
+  const catSelect = document.getElementById('formCategory');
+  const dropdown = document.getElementById('payeeDropdown');
+
+  if (payeeInput) payeeInput.value = payeeName;
+  if (isExpense !== undefined && isExpense !== null) {
+    setTransactionType(isExpense ? 'despesa' : 'receita');
+  }
+  if (catName && catSelect) {
+    catSelect.value = catName;
+  }
+  if (dropdown) dropdown.classList.remove('show');
+}
+
+// Open Form Modal (New or Scan)
 function openTransactionForm(preset = null) {
   const structure = coletorStorage.getStructure();
   if (!structure) {
@@ -198,16 +291,17 @@ function openTransactionForm(preset = null) {
   const modal = document.getElementById('modalTxForm');
   const title = document.getElementById('txModalTitle');
   const txIdInput = document.getElementById('formTxId');
-  const thumbInput = document.getElementById('formReceiptThumb');
   const previewWrap = document.getElementById('receiptPreviewWrap');
   const previewImg = document.getElementById('receiptPreviewImg');
 
   const amtInput = document.getElementById('formAmount');
   const payeeInput = document.getElementById('formPayee');
   const accSelect = document.getElementById('formAccount');
-  const catSelect = document.getElementById('formCategory');
   const dateInput = document.getElementById('formDate');
   const memoInput = document.getElementById('formMemo');
+  const dropdown = document.getElementById('payeeDropdown');
+
+  if (dropdown) dropdown.classList.remove('show');
 
   // Fill accounts dropdown
   let accOpts = '';
@@ -216,26 +310,9 @@ function openTransactionForm(preset = null) {
   }
   accSelect.innerHTML = accOpts;
 
-  // Fill categories dropdown
-  let catOpts = '<option value="">(Sem categoria)</option>';
-  const parents = structure.cats.filter(c => !c.parent || c.parent.trim() === '');
-  for (const p of parents) {
-    const subs = structure.cats.filter(c => c.parent === p.name);
-    if (subs.length === 0) {
-      catOpts += `<option value="${p.name}">${p.name}</option>`;
-    } else {
-      for (const s of subs) {
-        const full = `${p.name}${SEP}${s.name}`;
-        catOpts += `<option value="${full}">${full}</option>`;
-      }
-    }
-  }
-  catSelect.innerHTML = catOpts;
-
   if (preset) {
     title.textContent = preset.isScan ? 'Confirmar Dados do Recibo' : 'Novo Lançamento';
     txIdInput.value = preset.id || '';
-    thumbInput.value = preset.thumbnail || '';
 
     if (preset.thumbnail) {
       previewImg.src = preset.thumbnail;
@@ -257,23 +334,36 @@ function openTransactionForm(preset = null) {
     dateInput.value = preset.date || todayISO();
     memoInput.value = preset.memo || '';
 
+    // Set initial type
+    const initialType = preset.isExpense === false ? 'receita' : 'despesa';
+    setTransactionType(initialType);
+
     // Auto-match category based on payee
     if (preset.payee && structure.frequentPayees) {
-      const match = structure.frequentPayees.find(p => p.payee.toLowerCase().includes(preset.payee.toLowerCase()));
-      if (match && match.cat) {
-        catSelect.value = match.cat;
+      const norm = preset.payee.toLowerCase().trim();
+      const match = structure.frequentPayees.find(p => p.payee.toLowerCase().trim() === norm) ||
+                    structure.frequentPayees.find(p => p.payee.toLowerCase().includes(norm));
+      if (match) {
+        if (match.isExpense !== undefined) {
+          setTransactionType(match.isExpense ? 'despesa' : 'receita');
+        }
+        if (match.cat) {
+          const catSelect = document.getElementById('formCategory');
+          if (catSelect) catSelect.value = match.cat;
+        }
       }
     }
   } else {
     title.textContent = 'Novo Lançamento';
     txIdInput.value = '';
-    thumbInput.value = '';
     previewWrap.style.display = 'none';
 
     amtInput.value = '';
     payeeInput.value = '';
     dateInput.value = todayISO();
     memoInput.value = '';
+
+    setTransactionType('despesa');
   }
 
   openModal(modal);
@@ -303,6 +393,7 @@ async function handleReceiptImageSelected(e) {
       amt: parsed.amt,
       date: parsed.date,
       thumbnail: parsed.thumbnail,
+      isExpense: true,
       memo: 'Comprovante escaneado via OCR'
     });
 
@@ -354,7 +445,8 @@ function submitTransactionForm() {
   const cat = document.getElementById('formCategory').value;
   const date = document.getElementById('formDate').value || todayISO();
   const memo = document.getElementById('formMemo').value.trim();
-  const thumb = document.getElementById('formReceiptThumb').value;
+
+  const signedAmt = currentTxType === 'despesa' ? -cents : cents;
 
   const newTx = {
     id: uid(),
@@ -363,10 +455,9 @@ function submitTransactionForm() {
     payee: payee,
     cat: cat,
     memo: memo,
-    amt: -cents, // Default to expense
-    rec: true,
-    createdAt: new Date().toISOString(),
-    receiptThumb: thumb || null
+    amt: signedAmt,
+    rec: date <= todayISO(),
+    createdAt: new Date().toISOString()
   };
 
   coletorStorage.addPendingTransaction(newTx);
@@ -410,10 +501,87 @@ function setupEventListeners() {
     btn.addEventListener('click', closeAllModals);
   });
 
-  // Header Setup Button
+  // Header Setup Buttons (Gear or Base Row)
   const btnHeaderSetup = document.getElementById('btnHeaderSetup');
   if (btnHeaderSetup) {
     btnHeaderSetup.addEventListener('click', openSetupModal);
+  }
+  const headerBaseRow = document.getElementById('headerBaseRow');
+  if (headerBaseRow) {
+    headerBaseRow.addEventListener('click', openSetupModal);
+  }
+
+  // Type Switcher Buttons
+  const btnTypeExpense = document.getElementById('btnTypeExpense');
+  const btnTypeIncome = document.getElementById('btnTypeIncome');
+  if (btnTypeExpense) {
+    btnTypeExpense.addEventListener('click', () => setTransactionType('despesa'));
+  }
+  if (btnTypeIncome) {
+    btnTypeIncome.addEventListener('click', () => setTransactionType('receita'));
+  }
+
+  // Live Autocomplete for Payee Input
+  const payeeInput = document.getElementById('formPayee');
+  const payeeDropdown = document.getElementById('payeeDropdown');
+  if (payeeInput && payeeDropdown) {
+    payeeInput.addEventListener('input', () => {
+      const q = payeeInput.value.trim();
+      if (q.length < 2) {
+        payeeDropdown.classList.remove('show');
+        return;
+      }
+      const matches = coletorStorage.searchPayees(q);
+      if (matches.length === 0) {
+        payeeDropdown.classList.remove('show');
+        return;
+      }
+
+      let html = '';
+      for (const m of matches) {
+        html += `
+          <div class="autocomplete-item" data-payee="${m.payee}" data-cat="${m.cat || ''}" data-type="${m.isExpense ? 'despesa' : 'receita'}">
+            <span class="name">${m.payee}</span>
+            <span class="cat-badge">${m.cat || 'Geral'}</span>
+          </div>
+        `;
+      }
+      payeeDropdown.innerHTML = html;
+      payeeDropdown.classList.add('show');
+
+      payeeDropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+        item.addEventListener('click', () => {
+          applyPayeeSelection(
+            item.getAttribute('data-payee'),
+            item.getAttribute('data-cat'),
+            item.getAttribute('data-type') === 'despesa'
+          );
+        });
+      });
+    });
+
+    // Close autocomplete on click outside
+    document.addEventListener('click', (e) => {
+      if (!payeeInput.contains(e.target) && !payeeDropdown.contains(e.target)) {
+        payeeDropdown.classList.remove('show');
+      }
+    });
+  }
+
+  // Format currency on typing amount
+  const amtInput = document.getElementById('formAmount');
+  if (amtInput) {
+    amtInput.addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '');
+      if (!v) {
+        e.target.value = '';
+        return;
+      }
+      const cents = parseInt(v, 10);
+      const reals = Math.floor(cents / 100);
+      const c = cents % 100;
+      e.target.value = `${reals.toLocaleString('pt-BR')},${c.toString().padStart(2, '0')}`;
+    });
   }
 
   // Choose structure file
