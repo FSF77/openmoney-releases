@@ -1,10 +1,10 @@
 {
   "version": "1.0.28",
-  "build": 45,
+  "build": 46,
   "releaseDate": "2026-10-24",
   "title": "OpenMoney v1.0.28",
-  "notes": "Exportação e impressão em PDF A4 de Fatura de Cartão de Crédito e Extrato Mensal da Conta com saldos inicial, final e previsto",
+  "notes": "Refinamento do layout de Fatura de Cartão e Extrato Mensal em PDF: ícone conciliado antes da data, notas em segunda linha, saldo acumulado por quebra de dia e valores sem R$ em linha única",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.28.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.28",
-  "sha256": "01bf1796b5404a81762ac82d87e412cc841ebe13c700042034682c7b8f5c13a0"
+  "sha256": "18b8e1d2dcd152e545b26d67cf88c939835bf68e51257efaabfc36fac47be5a0"
 }

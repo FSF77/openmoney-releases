@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.28** (Build 45)
-> *Publicada em: 24/10/2026 às 22:05*
+## ⚡ Última Versão Disponível: **v1.0.28** (Build 46)
+> *Publicada em: 24/10/2026 às 22:22*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-01bf1796b5404a81762ac82d87e412cc841ebe13c700042034682c7b8f5c13a0  OpenMoney-1.0.28.zip
+18b8e1d2dcd152e545b26d67cf88c939835bf68e51257efaabfc36fac47be5a0  OpenMoney-1.0.28.zip
 ```
 
 ### 📝 Notas desta Versão
-Exportação e impressão em PDF A4 de Fatura de Cartão de Crédito e Extrato Mensal da Conta com saldos inicial, final e previsto
+Layout otimizado de Fatura de Cartão e Extrato Mensal em PDF: ícone conciliado antes da data, notas em segunda linha, saldo acumulado por quebra de dia e valores sem R$ em linha única
 
 ---
 
