@@ -15,15 +15,20 @@ export class VoiceExpenseEngine {
     return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
   }
 
-  // Force clean up any existing recognition instance and release mic
-  cleanup() {
+  // Set transcript manually (e.g. from textarea input / iOS keyboard dictation)
+  setTranscript(text) {
+    this.currentTranscript = (text || '').trim();
+  }
+
+  // Release previous recognition safely
+  async cleanup() {
     if (this.recognition) {
       try {
         this.recognition.onstart = null;
         this.recognition.onresult = null;
         this.recognition.onerror = null;
         this.recognition.onend = null;
-        this.recognition.abort();
+        this.recognition.stop();
       } catch (e) {}
       this.recognition = null;
     }
@@ -31,8 +36,8 @@ export class VoiceExpenseEngine {
   }
 
   // Start Voice Recognition
-  startListening({ onTranscript, onFinal, onError, onStart, onEnd, onEmpty }) {
-    this.cleanup();
+  async startListening({ onTranscript, onFinal, onError, onStart, onEnd, onEmpty }) {
+    await this.cleanup();
 
     if (!this.isSupported()) {
       if (onError) onError(new Error('Reconhecimento de voz não suportado neste navegador.'));
@@ -42,6 +47,17 @@ export class VoiceExpenseEngine {
     this.callbacks = { onTranscript, onFinal, onError, onStart, onEnd, onEmpty };
     this.hasFinished = false;
     this.currentTranscript = '';
+
+    // Workaround for Safari iOS Audio Session lock:
+    // Briefly acquire and release audio stream to reset the audio hardware pipeline
+    if (navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(track => track.stop());
+      } catch (e) {
+        // If user already granted or if restricted, continue
+      }
+    }
 
     const SpeechClass = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -53,9 +69,12 @@ export class VoiceExpenseEngine {
     }
 
     this.recognition.lang = 'pt-BR';
-    this.recognition.continuous = true;
+    // CRITICAL: continuous MUST be false on iOS Safari to prevent audio pipeline deadlocks
+    this.recognition.continuous = false;
     this.recognition.interimResults = true;
     this.recognition.maxAlternatives = 1;
+
+    let finalSpokenText = '';
 
     this.recognition.onstart = () => {
       this.isListening = true;
@@ -63,22 +82,20 @@ export class VoiceExpenseEngine {
     };
 
     this.recognition.onresult = (event) => {
-      let finalStr = '';
       let interimStr = '';
-
       for (let i = 0; i < event.results.length; i++) {
         const item = event.results[i];
         if (item && item[0]) {
           const text = item[0].transcript || '';
           if (item.isFinal) {
-            finalStr += text + ' ';
+            finalSpokenText += text + ' ';
           } else {
             interimStr += text;
           }
         }
       }
 
-      const combined = (finalStr + interimStr).trim().replace(/\s+/g, ' ');
+      const combined = (finalSpokenText + interimStr).trim().replace(/\s+/g, ' ');
       if (combined) {
         this.currentTranscript = combined;
         if (this.callbacks?.onTranscript) {
@@ -91,75 +108,76 @@ export class VoiceExpenseEngine {
       const err = event.error || '';
       console.warn('SpeechRecognition onerror:', err);
 
-      // 'aborted' occurs when user taps stop or cancel - ignore safely
       if (err === 'aborted') {
         return;
       }
 
-      // If we already have captured text, finish successfully instead of failing
+      // If we already have captured text, finish with success
       if (this.currentTranscript && this.currentTranscript.trim()) {
         this.commitSpeech();
         return;
       }
 
       if (err === 'no-speech') {
-        if (this.callbacks?.onEmpty) {
-          this.callbacks.onEmpty();
-        }
+        // Just let it close or stay ready for keyboard input
         return;
       }
 
       if (err === 'not-allowed') {
         if (this.callbacks?.onError) {
-          this.callbacks.onError(new Error('Permissão de microfone negada. Verifique Ajustes do iPhone > Safari > Microfone.'));
+          this.callbacks.onError(new Error('Permissão negada. Verifique os Ajustes do iPhone > Safari > Microfone.'));
         }
         return;
       }
 
       if (this.callbacks?.onError) {
-        this.callbacks.onError(new Error(`Reconhecimento finalizado (${err || 'áudio ocupado'}). Tente novamente.`));
+        this.callbacks.onError(new Error(`Reconhecimento finalizado (${err || 'áudio ocupado'}).`));
       }
     };
 
     this.recognition.onend = () => {
       this.isListening = false;
-      if (!this.hasFinished) {
-        if (this.currentTranscript && this.currentTranscript.trim()) {
-          this.commitSpeech();
-        } else if (this.callbacks?.onEnd) {
-          this.callbacks.onEnd();
-        }
+      const finished = this.hasFinished;
+
+      if (!finished && this.currentTranscript && this.currentTranscript.trim()) {
+        // Natural end of speech detected by iOS
+        this.commitSpeech();
       }
     };
 
     try {
       this.recognition.start();
     } catch (err) {
-      console.warn('Initial recognition.start() failed, retrying in 300ms...', err);
+      console.warn('Initial recognition.start() failed:', err);
+      // Give iOS 250ms breathing room and retry once
       setTimeout(() => {
         if (!this.hasFinished && this.recognition) {
           try {
             this.recognition.start();
           } catch (retryErr) {
-            this.cleanup();
             if (this.callbacks?.onError) {
-              this.callbacks.onError(new Error('Microfone reiniciando. Tente novamente em alguns segundos.'));
+              this.callbacks.onError(new Error('Microfone reiniciando. Aguarde 1 segundo e tente novamente.'));
             }
           }
         }
-      }, 300);
+      }, 250);
     }
   }
 
   // Commit what was captured and trigger completion
-  commitSpeech() {
+  commitSpeech(fallbackText = '') {
     if (this.hasFinished) return;
     this.hasFinished = true;
 
-    const text = (this.currentTranscript || '').trim();
+    const text = (this.currentTranscript || fallbackText || '').trim();
     const onFinal = this.callbacks?.onFinal;
 
-    this.cleanup();
+    if (this.recognition) {
+      try {
+        this.recognition.stop();
+      } catch (e) {}
+    }
+    this.isListening = false;
 
     if (text && onFinal) {
       onFinal(text);
@@ -167,9 +185,10 @@ export class VoiceExpenseEngine {
   }
 
   // Stop listening manually (called when user clicks Concluir Fala)
-  stopListening() {
-    if (this.currentTranscript && this.currentTranscript.trim()) {
-      this.commitSpeech();
+  stopListening(fallbackText = '') {
+    const text = (this.currentTranscript || fallbackText || '').trim();
+    if (text) {
+      this.commitSpeech(text);
     } else {
       this.cancelListening();
       if (this.callbacks?.onEmpty) {
@@ -181,7 +200,12 @@ export class VoiceExpenseEngine {
   // Cancel flow (called when user clicks Cancelar)
   cancelListening() {
     this.hasFinished = true;
-    this.cleanup();
+    if (this.recognition) {
+      try {
+        this.recognition.abort();
+      } catch (e) {}
+    }
+    this.isListening = false;
   }
 
   // Parse natural language spoken phrase into OpenMoney fields

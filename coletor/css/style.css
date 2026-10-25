@@ -793,20 +793,25 @@ body.modal-open {
 
 .voice-transcript-box {
   width: 100%;
-  min-height: 58px;
-  background: rgba(255, 255, 255, 0.04);
+  min-height: 64px;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px dashed var(--border-glass);
   border-radius: var(--radius-md);
   padding: 12px 14px;
-  font-size: 0.92rem;
-  font-style: italic;
+  font-size: 0.95rem;
+  font-family: inherit;
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
   line-height: 1.4;
-  word-break: break-word;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
+}
+
+.voice-transcript-box:focus {
+  border-color: #8b5cf6;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .btn-cancel-voice {

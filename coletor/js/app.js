@@ -441,24 +441,24 @@ function startVoiceExpenseFlow() {
   const modal = document.getElementById('modalVoiceListening');
   const preview = document.getElementById('voiceTranscriptPreview');
   if (preview) {
-    preview.textContent = 'Fale agora...';
-    preview.style.fontStyle = 'italic';
-    preview.style.opacity = '0.7';
+    preview.value = '';
+    preview.placeholder = 'Ouvindo... pode falar (ou toque para ditar)';
+    preview.oninput = () => {
+      voiceExpenseEngine.setTranscript(preview.value);
+    };
   }
 
   openModal(modal);
 
   voiceExpenseEngine.startListening({
     onStart: () => {
-      if (preview) {
-        preview.textContent = 'Ouvindo... pode falar';
+      if (preview && !preview.value) {
+        preview.placeholder = 'Ouvindo... pode falar agora';
       }
     },
     onTranscript: (interimText) => {
       if (preview) {
-        preview.textContent = `"${interimText}"`;
-        preview.style.fontStyle = 'normal';
-        preview.style.opacity = '1';
+        preview.value = interimText;
       }
     },
     onFinal: (finalText) => {
@@ -723,7 +723,9 @@ function setupEventListeners() {
         e.preventDefault();
         e.stopPropagation();
       }
-      voiceExpenseEngine.stopListening();
+      const preview = document.getElementById('voiceTranscriptPreview');
+      const text = preview ? preview.value : '';
+      voiceExpenseEngine.stopListening(text);
     };
     btnStopVoice.addEventListener('click', handleStop);
     btnStopVoice.addEventListener('touchend', handleStop);
