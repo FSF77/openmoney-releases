@@ -1,10 +1,10 @@
 {
-  "version": "1.0.30",
-  "build": 49,
-  "releaseDate": "2026-10-25",
-  "title": "OpenMoney v1.0.30",
-  "notes": "Novas opções para lançamentos recorrentes: Quinzenal, Bimestral, Trimestral e Semestral com horizontes adaptativos de projeção e suporte completo no macOS e iOS.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.30.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v1.0.30",
-  "sha256": "f804d04bc0777d009396a38f1e50b6dacb2e89388230073d1a3a1dcf85413867"
+  "version": "2.0",
+  "build": 52,
+  "releaseDate": "2026-10-26",
+  "title": "OpenMoney v2.0",
+  "notes": "Lançamento da versão 2.0: Inclusão do status da conta (favorita e ativa) na exportação/importação CSV de lançamentos e padronização das categorias de transferências entre contas.",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0",
+  "sha256": "017823af141a6b2c476e1c0695c85943c66e548bd4a858879d1f1cf7cf7e8adc"
 }

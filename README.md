@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v1.0.30** (Build 49)
-> *Publicada em: 25/10/2026 às 17:06*
+## ⚡ Última Versão Disponível: **v2.0** (Build 52)
+> *Publicada em: 26/10/2026 às 07:44*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-1.0.30.zip** | Pacote oficial v1.0.30 para macOS | [📥 Download v1.0.30](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.30.zip) | ~4 MB |
+| **OpenMoney-2.0.zip** | Pacote oficial v2.0 para macOS | [📥 Download v2.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-f804d04bc0777d009396a38f1e50b6dacb2e89388230073d1a3a1dcf85413867  OpenMoney-1.0.30.zip
+017823af141a6b2c476e1c0695c85943c66e548bd4a858879d1f1cf7cf7e8adc  OpenMoney-2.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Novas opções para lançamentos recorrentes: Quinzenal, Bimestral, Trimestral e Semestral com horizontes adaptativos de projeção e suporte completo no macOS e iOS.
+Lançamento da versão 2.0: Inclusão do status da conta (favorita e ativa) na exportação/importação CSV de lançamentos e padronização das categorias de transferências entre contas.
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-1.0.30.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-1.0.30.zip).
+1. Baixe o pacote [OpenMoney-2.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
