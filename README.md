@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.0.1** (Build 53)
-> *Publicada em: 26/10/2026 às 18:50*
+## ⚡ Última Versão Disponível: **v2.0.1** (Build 54)
+> *Publicada em: 26/10/2026 às 19:51*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-51641ab69976a954a38563cfa032c6d0dde641adf549c1e3390e8f2cc27f228e  OpenMoney-2.0.1.zip
+2839f12774eb778b4f91b8cb92dbd65bf44e8d29bb6f7fe98491fd2d0c60da9b  OpenMoney-2.0.1.zip
 ```
 
 ### 📝 Notas desta Versão
-Filtro e saldo previsto por competência da fatura em contas de cartão de crédito
+Fatura de Cartão de Crédito identificada oficialmente pelo mês de vencimento (padrão de mercado), compatibilidade no seletor de mês, tags, exportação/importação CSV e migração transparente v7.
 
 ---
 
