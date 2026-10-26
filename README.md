@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.0** (Build 52)
-> *Publicada em: 26/10/2026 às 07:44*
+## ⚡ Última Versão Disponível: **v2.0.1** (Build 53)
+> *Publicada em: 26/10/2026 às 18:50*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.0.zip** | Pacote oficial v2.0 para macOS | [📥 Download v2.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.zip) | ~4 MB |
+| **OpenMoney-2.0.1.zip** | Pacote oficial v2.0.1 para macOS | [📥 Download v2.0.1](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.1.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-017823af141a6b2c476e1c0695c85943c66e548bd4a858879d1f1cf7cf7e8adc  OpenMoney-2.0.zip
+51641ab69976a954a38563cfa032c6d0dde641adf549c1e3390e8f2cc27f228e  OpenMoney-2.0.1.zip
 ```
 
 ### 📝 Notas desta Versão
-Lançamento da versão 2.0: Inclusão do status da conta (favorita e ativa) na exportação/importação CSV de lançamentos e padronização das categorias de transferências entre contas.
+Filtro e saldo previsto por competência da fatura em contas de cartão de crédito
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.zip).
+1. Baixe o pacote [OpenMoney-2.0.1.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.1.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*

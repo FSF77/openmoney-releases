@@ -1,10 +1,10 @@
 {
-  "version": "2.0",
-  "build": 52,
+  "version": "2.0.1",
+  "build": 53,
   "releaseDate": "2026-10-26",
-  "title": "OpenMoney v2.0",
-  "notes": "Lançamento da versão 2.0: Inclusão do status da conta (favorita e ativa) na exportação/importação CSV de lançamentos e padronização das categorias de transferências entre contas.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0",
-  "sha256": "017823af141a6b2c476e1c0695c85943c66e548bd4a858879d1f1cf7cf7e8adc"
+  "title": "OpenMoney v2.0.1",
+  "notes": "Filtro e saldo previsto por competência da fatura em contas de cartão de crédito",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.1.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.1",
+  "sha256": "51641ab69976a954a38563cfa032c6d0dde641adf549c1e3390e8f2cc27f228e"
 }
