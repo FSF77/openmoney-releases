@@ -1,5 +1,5 @@
 // OpenMoney Business Logic & In-Memory Store
-import { uid, invKeyFor, addMonths, todayISO, CARD_TYPE, SEP, normalizeStr } from './models.js';
+import { uid, invKeyFor, invDates, isVigenteInvoice, addMonths, todayISO, CARD_TYPE, SEP, normalizeStr } from './models.js';
 
 export class MoneyStore {
   constructor() {
@@ -461,21 +461,62 @@ export class MoneyStore {
     const todayDate = new Date(today + 'T00:00:00');
     return this.db.txs.filter(tx => {
       if (tx.rec) return false;
-      const txDate = new Date(tx.date + 'T00:00:00');
-      const diffDays = Math.round((txDate - todayDate) / (1000 * 60 * 60 * 24));
-      return diffDays <= days;
-    }).map(tx => {
-      const txDate = new Date(tx.date + 'T00:00:00');
-      const diffDays = Math.round((txDate - todayDate) / (1000 * 60 * 60 * 24));
       const acc = this.accById(tx.acc);
+      const isCard = acc && acc.type === CARD_TYPE && Boolean(acc.card);
+      let effectiveDueDate = tx.date;
+      let isOverdue = false;
+
+      if (isCard) {
+        const ik = tx.ik || invKeyFor(acc.card, tx.date);
+        const dates = invDates(acc.card, ik);
+        const dueDate = (acc.invoices && acc.invoices[ik] && acc.invoices[ik].due) || dates.due;
+        effectiveDueDate = dueDate;
+        const isVigente = isVigenteInvoice(acc.card, ik, acc, today);
+        const diff = Math.round((new Date(effectiveDueDate + 'T00:00:00') - todayDate) / (1000 * 60 * 60 * 24));
+        isOverdue = diff < 0 && isVigente;
+      } else {
+        const diff = Math.round((new Date(tx.date + 'T00:00:00') - todayDate) / (1000 * 60 * 60 * 24));
+        isOverdue = diff < 0;
+      }
+
+      const diffDays = Math.round((new Date(effectiveDueDate + 'T00:00:00') - todayDate) / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        if (days < 9000 && !isOverdue) return false;
+      } else {
+        if (diffDays > days) return false;
+      }
+      return true;
+    }).map(tx => {
+      const acc = this.accById(tx.acc);
+      const isCard = acc && acc.type === CARD_TYPE && Boolean(acc.card);
+      let effectiveDueDate = tx.date;
+      let isOverdue = false;
+
+      if (isCard) {
+        const ik = tx.ik || invKeyFor(acc.card, tx.date);
+        const dates = invDates(acc.card, ik);
+        const dueDate = (acc.invoices && acc.invoices[ik] && acc.invoices[ik].due) || dates.due;
+        effectiveDueDate = dueDate;
+        const isVigente = isVigenteInvoice(acc.card, ik, acc, today);
+        const diff = Math.round((new Date(effectiveDueDate + 'T00:00:00') - todayDate) / (1000 * 60 * 60 * 24));
+        isOverdue = diff < 0 && isVigente;
+      } else {
+        const diff = Math.round((new Date(tx.date + 'T00:00:00') - todayDate) / (1000 * 60 * 60 * 24));
+        isOverdue = diff < 0;
+      }
+
+      const diffDays = Math.round((new Date(effectiveDueDate + 'T00:00:00') - todayDate) / (1000 * 60 * 60 * 24));
+
       return {
         tx,
         daysUntilDue: diffDays,
-        isOverdue: diffDays < 0,
+        isOverdue,
         isDueToday: diffDays === 0,
+        effectiveDueDate,
         accountName: acc ? acc.name : 'Conta'
       };
-    }).sort((a, b) => a.daysUntilDue - b.daysUntilDue || a.tx.date.localeCompare(b.tx.date));
+    }).sort((a, b) => a.daysUntilDue - b.daysUntilDue || a.effectiveDueDate.localeCompare(b.effectiveDueDate) || a.tx.date.localeCompare(b.tx.date));
   }
 
   dueBillsSummary(days = 3) {

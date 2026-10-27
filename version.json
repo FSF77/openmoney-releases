@@ -1,10 +1,10 @@
 {
-  "version": "2.0.2",
-  "build": 55,
+  "version": "2.0.3",
+  "build": 59,
   "releaseDate": "2026-10-27",
-  "title": "OpenMoney v2.0.2",
-  "notes": "Otimização no grid de lançamentos e no extrato em PDF: remoção da coluna redundante de data com aproveitamento do espaço nas descrições/categorias, barra de agrupamento com saldo real/previsto no fechamento de cada dia e melhor espaçamento visual.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.2.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.2",
-  "sha256": "d65a571ff2052de1e1d4f92654f0f1d10761968e00ad43c0ac1117b2f0df3721"
+  "title": "OpenMoney v2.0.3",
+  "notes": "Ajuste na Central de Contas a Pagar e Receber: lançamentos de contas de cartão de crédito utilizam a data de vencimento da fatura como referência e só são considerados atrasados quando a fatura for vigente e seu vencimento tiver decorrido.",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.3.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.3",
+  "sha256": "67fc38d87b039dc902e83ba405fa44cae4a6e1cd42d5cf3e9a5491a0b6799dfa"
 }

@@ -94,21 +94,48 @@ export function addMonths(dateStr, monthsToAdd) {
   return `${targetYear}-${targetMonth}-${clampedDay}`;
 }
 
-// Determine invoice key (YYYY-MM) based on card closing day (closeDay)
+// Determine invoice key (YYYY-MM) based on card closing day (closeDay) and due day (dueDay)
 export function invKeyFor(cardConfig, dateStr) {
   if (!cardConfig || typeof cardConfig.closeDay !== 'number') {
     return dateStr.substring(0, 7);
   }
-  const parts = dateStr.split('-');
-  const year = parts[0];
-  const month = parts[1];
-  const day = parseInt(parts[2], 10);
+  const parts = dateStr.split('-').map(Number);
+  if (parts.length !== 3) return dateStr.substring(0, 7);
+  const k = `${parts[0]}-${String(parts[1]).padStart(2, '0')}`;
+  const closeMonth = parts[2] > cardConfig.closeDay ? addMonths(k, 1) : k;
+  const dueDay = cardConfig.dueDay || cardConfig.closeDay;
+  return dueDay <= cardConfig.closeDay ? addMonths(closeMonth, 1) : closeMonth;
+}
 
-  const ym = `${year}-${month}`;
-  if (day <= cardConfig.closeDay) {
-    return ym;
+export function invDates(cardConfig, key) {
+  const parts = key.split('-').map(Number);
+  if (parts.length !== 2) return { close: key + '-01', due: key + '-10' };
+  const dueDay = cardConfig.dueDay || 10;
+  const closeDay = cardConfig.closeDay || 1;
+  const closeMonth = dueDay <= closeDay ? addMonths(key, -1) : key;
+  const cParts = closeMonth.split('-').map(Number);
+  const maxCloseDays = new Date(cParts[0], cParts[1], 0).getDate();
+  const maxDueDays = new Date(parts[0], parts[1], 0).getDate();
+  const cDay = String(Math.min(closeDay, maxCloseDays)).padStart(2, '0');
+  const dDay = String(Math.min(dueDay, maxDueDays)).padStart(2, '0');
+  return {
+    close: `${closeMonth}-${cDay}`,
+    due: `${key}-${dDay}`
+  };
+}
+
+export function isVigenteInvoice(cardConfig, invoiceKey, account, today = todayISO()) {
+  const currentOpenKey = invKeyFor(cardConfig, today);
+  if (invoiceKey === currentOpenKey) return true;
+
+  const dates = invDates(cardConfig, invoiceKey);
+  const dueDate = (account && account.invoices && account.invoices[invoiceKey] && account.invoices[invoiceKey].due) || dates.due;
+  const closeDate = (account && account.invoices && account.invoices[invoiceKey] && account.invoices[invoiceKey].close) || dates.close;
+
+  if (closeDate <= today && dueDate >= today) {
+    return true;
   }
-  return addMonths(ym, 1);
+  return false;
 }
 
 // Normalize text for accent-insensitive search
