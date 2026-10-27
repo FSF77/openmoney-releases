@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.0.1** (Build 54)
-> *Publicada em: 26/10/2026 às 19:51*
+## ⚡ Última Versão Disponível: **v2.0.2** (Build 55)
+> *Publicada em: 27/10/2026 às 08:27*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.0.1.zip** | Pacote oficial v2.0.1 para macOS | [📥 Download v2.0.1](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.1.zip) | ~4 MB |
+| **OpenMoney-2.0.2.zip** | Pacote oficial v2.0.2 para macOS | [📥 Download v2.0.2](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.2.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-2839f12774eb778b4f91b8cb92dbd65bf44e8d29bb6f7fe98491fd2d0c60da9b  OpenMoney-2.0.1.zip
+d65a571ff2052de1e1d4f92654f0f1d10761968e00ad43c0ac1117b2f0df3721  OpenMoney-2.0.2.zip
 ```
 
 ### 📝 Notas desta Versão
-Fatura de Cartão de Crédito identificada oficialmente pelo mês de vencimento (padrão de mercado), compatibilidade no seletor de mês, tags, exportação/importação CSV e migração transparente v7.
+Otimização no grid de lançamentos e no extrato em PDF: remoção da coluna redundante de data com aproveitamento do espaço nas descrições/categorias, barra de agrupamento com saldo real/previsto no fechamento de cada dia e melhor espaçamento visual.
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.0.1.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.1.zip).
+1. Baixe o pacote [OpenMoney-2.0.2.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.2.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
