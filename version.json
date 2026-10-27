@@ -1,10 +1,10 @@
 {
-  "version": "2.0.5",
-  "build": 61,
+  "version": "2.0.6",
+  "build": 68,
   "releaseDate": "2026-10-27",
-  "title": "OpenMoney v2.0.5",
-  "notes": "Remoção da regra de ocultação das categorias ZZZ (D) e ZZZ (C) em relatórios, fluxo de caixa e orçamento.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.5.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.5",
-  "sha256": "03db283b97446355f583eab2a2b07d6a6de85be0e216bc40facbfdd74dc86e59"
+  "title": "OpenMoney v2.0.6",
+  "notes": "Seleção múltipla de contas por checkbox no Fluxo de Caixa e Relatórios com conciliação inteligente de transferências, agrupador por Negócio (PF/PJ) no cadastro de contas e reformulação visual da tela de edição de contas.",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.6.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.6",
+  "sha256": "848a1402adb3a22336c5a9ccd418497de0f926c3a1430e428540a8965c30a9cf"
 }
