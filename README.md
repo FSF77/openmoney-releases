@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.0.3** (Build 59)
-> *Publicada em: 27/10/2026 às 09:45*
+## ⚡ Última Versão Disponível: **v2.0.4** (Build 60)
+> *Publicada em: 27/10/2026 às 12:36*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.0.3.zip** | Pacote oficial v2.0.3 para macOS | [📥 Download v2.0.3](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.3.zip) | ~4 MB |
+| **OpenMoney-2.0.4.zip** | Pacote oficial v2.0.4 para macOS | [📥 Download v2.0.4](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.4.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-67fc38d87b039dc902e83ba405fa44cae4a6e1cd42d5cf3e9a5491a0b6799dfa  OpenMoney-2.0.3.zip
+9625a29e344dda4cbcf30dfe65b6aa654e62a9e028462b944067b735b184d97b  OpenMoney-2.0.4.zip
 ```
 
 ### 📝 Notas desta Versão
-Release v2.0.3: critério de vencimento e atraso em contas de cartão de crédito baseado na fatura vigente
+Exibição compacta do dia do mês ao lado da conciliação no grid de lançamentos, mantendo agrupamento consolidado ao final do dia.
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.0.3.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.3.zip).
+1. Baixe o pacote [OpenMoney-2.0.4.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.4.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
