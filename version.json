@@ -1,10 +1,10 @@
 {
-  "version": "2.1.2",
-  "build": 72,
+  "version": "2.1.3",
+  "build": 74,
   "releaseDate": "2026-10-28",
-  "title": "OpenMoney v2.1.2",
-  "notes": "Padronizar versão Swift e Flutter",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.2.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.1.2",
-  "sha256": "43ffb136adf545fbe2861a4a82cd76827ab445fc67c6733fda18a1b10d4f7e72"
+  "title": "OpenMoney v2.1.3",
+  "notes": "Sistema de Auditoria e Logs de Alterações e melhorias gerais,",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.3.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.1.3",
+  "sha256": "920b8c17213f9e1aafb4150f7d2f81db9e2be9212860dadf2c68a4daacb3b94c"
 }
