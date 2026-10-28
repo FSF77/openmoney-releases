@@ -739,65 +739,16 @@ function setupEventListeners() {
     fileStructureInput.addEventListener('change', handleStructureFileSelected);
   }
 
-  // Action: Scan Receipt (Opens Live Text Apple / OCR Options)
+  // Action: Scan Receipt (Direct camera capture & OCR)
   const btnScanReceipt = document.getElementById('btnScanReceipt');
-  if (btnScanReceipt) {
-    btnScanReceipt.addEventListener('click', openScanReceiptModal);
-  }
-
-  // Paste from Clipboard (Apple Live Text)
-  const btnPasteReceiptClipboard = document.getElementById('btnPasteReceiptClipboard');
-  if (btnPasteReceiptClipboard) {
-    btnPasteReceiptClipboard.addEventListener('click', async () => {
-      try {
-        if (!navigator.clipboard || !navigator.clipboard.readText) {
-          throw new Error('Clipboard API não disponível');
-        }
-        const text = await navigator.clipboard.readText();
-        if (text && text.trim()) {
-          processReceiptText(text);
-        } else {
-          showToast('Área de transferência vazia. Copie o texto do comprovante primeiro.', 3500);
-        }
-      } catch (err) {
-        showToast('Toque no campo abaixo e selecione Colar.', 3500);
-        const input = document.getElementById('scanReceiptTextInput');
-        if (input) input.focus();
-      }
-    });
-  }
-
-  // Process typed or Live Text from Textarea
-  const btnProcessReceiptText = document.getElementById('btnProcessReceiptText');
-  if (btnProcessReceiptText) {
-    btnProcessReceiptText.addEventListener('click', () => {
-      const input = document.getElementById('scanReceiptTextInput');
-      const text = input ? input.value : '';
-      if (!text.trim()) {
-        showToast('Cole ou escaneie o texto do comprovante antes de processar.', 3000);
+  const fileCameraInput = document.getElementById('fileCameraInput');
+  if (btnScanReceipt && fileCameraInput) {
+    btnScanReceipt.addEventListener('click', () => {
+      const structure = coletorStorage.getStructure();
+      if (!structure) {
+        openSetupModal();
         return;
       }
-      processReceiptText(text);
-    });
-  }
-
-  // Shortcut Instructions Accordion
-  const btnShowShortcutInstructions = document.getElementById('btnShowShortcutInstructions');
-  const shortcutInstructionsContent = document.getElementById('shortcutInstructionsContent');
-  if (btnShowShortcutInstructions && shortcutInstructionsContent) {
-    btnShowShortcutInstructions.addEventListener('click', () => {
-      const isHidden = shortcutInstructionsContent.style.display === 'none';
-      shortcutInstructionsContent.style.display = isHidden ? 'block' : 'none';
-      btnShowShortcutInstructions.textContent = isHidden ? 'Ocultar receita do Atalho' : 'Ver receita do Atalho do iOS';
-    });
-  }
-
-  // Fallback Camera input (Tesseract)
-  const btnFallbackCameraTesseract = document.getElementById('btnFallbackCameraTesseract');
-  const fileCameraInput = document.getElementById('fileCameraInput');
-  if (btnFallbackCameraTesseract && fileCameraInput) {
-    btnFallbackCameraTesseract.addEventListener('click', () => {
-      closeAllModals();
       fileCameraInput.click();
     });
     fileCameraInput.addEventListener('change', handleReceiptImageSelected);

@@ -50,7 +50,7 @@ class ReceiptScanner {
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Generate base64 thumbnail (max 300px)
+          // Generate base64 thumbnail from original photo (max 300px)
           const thumbCanvas = document.createElement('canvas');
           const thumbScale = Math.min(300 / width, 300 / height);
           thumbCanvas.width = Math.round(width * thumbScale);
@@ -58,6 +58,25 @@ class ReceiptScanner {
           const thumbCtx = thumbCanvas.getContext('2d');
           thumbCtx.drawImage(img, 0, 0, thumbCanvas.width, thumbCanvas.height);
           const thumbDataUrl = thumbCanvas.toDataURL('image/jpeg', 0.6);
+
+          // OCR Preprocessing: Grayscale + Dynamic Contrast Boost to make thermal receipts legible
+          try {
+            const imgData = ctx.getImageData(0, 0, width, height);
+            const d = imgData.data;
+            const contrast = 36; // boost contrast
+            const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+            for (let i = 0; i < d.length; i += 4) {
+              const gray = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+              const adjusted = factor * (gray - 128) + 128;
+              const val = adjusted < 0 ? 0 : (adjusted > 255 ? 255 : adjusted);
+              d[i] = val;
+              d[i + 1] = val;
+              d[i + 2] = val;
+            }
+            ctx.putImageData(imgData, 0, 0);
+          } catch (e) {
+            console.warn('Canvas pre-processing skipped:', e);
+          }
 
           resolve({
             dataUrl: canvas.toDataURL('image/jpeg', 0.85),

@@ -47,7 +47,7 @@
       <button id="btnScanReceipt" class="btn-action-main btn-scan">
         <div class="btn-action-icon">📷</div>
         <div class="btn-action-label">Escanear Recibo</div>
-        <div class="btn-action-sub">Live Text / OCR</div>
+        <div class="btn-action-sub">OCR automático</div>
       </button>
 
       <button id="btnVoiceTx" class="btn-action-main btn-voice">
@@ -197,74 +197,6 @@
     </div>
   </div>
 
-  <!-- MODAL: Escanear / Colar Comprovante (Live Text Apple) -->
-  <div id="modalScanReceipt" class="modal-overlay">
-    <div class="sheet" style="max-height: 85vh;">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <div class="sheet-title">📷 Escanear Comprovante</div>
-        <button class="sheet-close">&times;</button>
-      </div>
-
-      <div class="scan-receipt-modal-content">
-        <!-- Botão Principal: Colar da Área de Transferência -->
-        <button id="btnPasteReceiptClipboard" class="btn-paste-clipboard">
-          <span class="btn-paste-icon">📋</span>
-          <div class="btn-paste-text">
-            <div class="title">Colar Texto do Comprovante</div>
-            <div class="sub">Copiou o texto da foto com o Live Text? Toque aqui</div>
-          </div>
-        </button>
-
-        <div class="or-divider">
-          <span>OU ESCANEIE NA HORA</span>
-        </div>
-
-        <!-- Área de Texto com Live Text Nativo da Câmera do iOS -->
-        <div class="form-group">
-          <label class="form-label">Escanear com a Câmera do iPhone</label>
-          <textarea id="scanReceiptTextInput" class="receipt-text-input" rows="3" placeholder="Toque aqui e use 'Escanear Texto' no menu do iPhone, ou cole o texto..."></textarea>
-          <div class="scan-tip-box">
-            💡 <b>Dica no iPhone:</b> Toque duas vezes no campo acima e selecione o ícone de <b>Escanear Texto</b> (câmera) da Apple para ler o cupom em tempo real!
-          </div>
-        </div>
-
-        <button id="btnProcessReceiptText" class="btn-submit" style="margin-top: 10px;">
-          ✓ Processar Dados do Recibo
-        </button>
-
-        <!-- Seção Atalho do iOS -->
-        <div class="shortcut-accordion-box">
-          <div class="shortcut-tip-title">⚡ Deseja automatizar com 1 toque?</div>
-          <div class="shortcut-tip-desc">
-            Você pode usar o app <b>Atalhos (Shortcuts)</b> do iOS para fotografar com OCR nativo da Apple e abrir o Coletor preenchido.
-          </div>
-          <button id="btnShowShortcutInstructions" class="btn-shortcut-guide">Ver receita do Atalho do iOS</button>
-          <div id="shortcutInstructionsContent" class="shortcut-instructions-body" style="display:none;">
-            <ol style="margin: 8px 0 0 18px; padding: 0; line-height: 1.6; font-size: 0.8rem; color: var(--text-secondary);">
-              <li>Abra o app <b>Atalhos</b> do iPhone e crie um novo atalho.</li>
-              <li>Adicione a ação: <b>Tirar Foto</b> (com a câmera).</li>
-              <li>Adicione a ação: <b>Extrair Texto de Imagem</b>.</li>
-              <li>Adicione a ação: <b>Abrir URLs</b> com o link:
-                <div style="font-family: monospace; background: rgba(0,0,0,0.3); padding: 4px 6px; border-radius: 4px; word-break: break-all; margin: 4px 0; color: #60a5fa;">
-                  https://fsf77.github.io/openmoney-releases/coletor/?recibo=[Texto]
-                </div>
-              </li>
-              <li>Pronto! Coloque o ícone na sua Tela de Início.</li>
-            </ol>
-          </div>
-        </div>
-
-        <!-- Fallback link para câmera nativa web -->
-        <div style="text-align: center; margin-top: 16px;">
-          <button id="btnFallbackCameraTesseract" class="btn-link-subtle">
-            Prefere tirar foto direta pelo navegador? Clique aqui
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL: OCR em Processamento -->
   <div id="modalOcrLoading" class="modal-overlay">
     <div class="sheet" style="max-height: 40vh;">
@@ -299,6 +231,6 @@
   </div>
 
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=1.0.6"></script>
+  <script type="module" src="js/app.js?v=1.0.7"></script>
 </body>
 </html>
