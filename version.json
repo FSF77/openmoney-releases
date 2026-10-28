@@ -1,10 +1,10 @@
 {
-  "version": "2.0.6",
-  "build": 68,
+  "version": "2.0.7",
+  "build": 69,
   "releaseDate": "2026-10-27",
-  "title": "OpenMoney v2.0.6",
-  "notes": "Seleção múltipla de contas por checkbox no Fluxo de Caixa e Relatórios com conciliação inteligente de transferências, agrupador por Negócio (PF/PJ) no cadastro de contas e reformulação visual da tela de edição de contas.",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.6.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.6",
-  "sha256": "848a1402adb3a22336c5a9ccd418497de0f926c3a1430e428540a8965c30a9cf"
+  "title": "OpenMoney v2.0.7",
+  "notes": "Atualização visual do ícone do aplicativo com a marca d'água Swift no canto superior esquerdo",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.7.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.7",
+  "sha256": "8733714ce8dabfc3d1bd085dea0a0e6ebf43230504bb3ca73b9d4d501da087b9"
 }
