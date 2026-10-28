@@ -1,10 +1,10 @@
 {
-  "version": "2.0.7",
-  "build": 69,
-  "releaseDate": "2026-10-27",
-  "title": "OpenMoney v2.0.7",
-  "notes": "Atualização visual do ícone do aplicativo com a marca d'água Swift no canto superior esquerdo",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.0.7.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.0.7",
-  "sha256": "8733714ce8dabfc3d1bd085dea0a0e6ebf43230504bb3ca73b9d4d501da087b9"
+  "version": "2.1.1",
+  "build": 71,
+  "releaseDate": "2026-10-28",
+  "title": "OpenMoney v2.1.1",
+  "notes": "Padronizar versão Swift e Flutter",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.1.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.1.1",
+  "sha256": "45aef242b12fae62f4a5eeb1ad1ea550094cf8f6aa095fd9a36479995e331faa"
 }
