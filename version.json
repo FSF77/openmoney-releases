@@ -1,10 +1,10 @@
 {
-  "version": "2.1.5",
-  "build": 76,
+  "version": "2.1.6",
+  "build": 80,
   "releaseDate": "2026-10-29",
-  "title": "OpenMoney v2.1.5",
-  "notes": "Relatório de compras parceladas, inclusão de filtro por conta/negócio no relatório de contas a pagar e receber, Fluxo de Caixa dinâmico, Abatimento de previsões por mês atual ou por fatura,",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.5.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.1.5",
-  "sha256": "86c1bd24c3c035b735bc1c240d705faf634f8459c33b34e7cba65267c0efd031"
+  "title": "OpenMoney v2.1.6",
+  "notes": "Relatório de compras parceladas, inclusão de filtro por conta/negócio no relatório de contas a pagar e receber, Fluxo de Caixa dinâmico co novos filtros, Abatimento de previsões por mês atual ou por fatura",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.6.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.1.6",
+  "sha256": "328ae43870473ac733bfc7459e5d10e2b6b594c2d43bbb8d9001ef2865a13ca1"
 }
