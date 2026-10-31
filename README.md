@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.1.9** (Build 86)
-> *Publicada em: 30/10/2026 às 20:44*
+## ⚡ Última Versão Disponível: **v2.1.9** (Build 87)
+> *Publicada em: 30/10/2026 às 23:19*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-fc01d1a631a2d8040c1ad395e7a2ac2fdd851052d3d5654d08eb046b7d477e65  OpenMoney-2.1.9.zip
+52533c50438b998051e00cd3587cc3bdb00e18f6c9c53e078d04c857ffc07c8b  OpenMoney-2.1.9.zip
 ```
 
 ### 📝 Notas desta Versão
-Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, Fluxo de Caixa dinâmico…
+Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, melhorias no detalhamento do Fluxo de Caixa
 
 ---
 

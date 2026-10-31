@@ -1,10 +1,10 @@
 {
   "version": "2.1.9",
-  "build": 86,
+  "build": 87,
   "releaseDate": "2026-10-30",
   "title": "OpenMoney v2.1.9",
-  "notes": "Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, Fluxo de Caixa dinâmico…",
+  "notes": "Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, melhorias no detalhamento do Fluxo de Caixa",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.9.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.1.9",
-  "sha256": "fc01d1a631a2d8040c1ad395e7a2ac2fdd851052d3d5654d08eb046b7d477e65"
+  "sha256": "52533c50438b998051e00cd3587cc3bdb00e18f6c9c53e078d04c857ffc07c8b"
 }
