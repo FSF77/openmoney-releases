@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.1.9** (Build 87)
-> *Publicada em: 30/10/2026 às 23:19*
+## ⚡ Última Versão Disponível: **v2.2.0** (Build 88)
+> *Publicada em: 31/10/2026 às 12:22*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.1.9.zip** | Pacote oficial v2.1.9 para macOS | [📥 Download v2.1.9](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.9.zip) | ~4 MB |
+| **OpenMoney-2.2.0.zip** | Pacote oficial v2.2.0 para macOS | [📥 Download v2.2.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.0.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-52533c50438b998051e00cd3587cc3bdb00e18f6c9c53e078d04c857ffc07c8b  OpenMoney-2.1.9.zip
+7f416af56b9d29c0bc5fbfd84fd8d6ec2f7fe273ef3489b47750d27fdd286bdb  OpenMoney-2.2.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, melhorias no detalhamento do Fluxo de Caixa
+Melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais  >> Anteriores: Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, Fluxo de Caixa dinâmico…
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.1.9.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.1.9.zip).
+1. Baixe o pacote [OpenMoney-2.2.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.0.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
