@@ -1,10 +1,10 @@
 {
-  "version": "2.2.1",
-  "build": 92,
+  "version": "2.2.2",
+  "build": 93,
   "releaseDate": "2026-11-01",
-  "title": "OpenMoney v2.2.1",
-  "notes": "Inclusão de filtro anual no relatório, ajuste para ocultar menu lateral  >> Anteriores: melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, Opção de zoom nas telas e relatórios para os cegos como eu, ajustes na rotina de importação que não importava categorias corretamente, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, melhorias visuais, Fluxo de Caixa dinâmico…",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.1.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.2.1",
-  "sha256": "5662388d0cfb666d30eda02eaa422ca648e41469e2a8da3f7be5d7f4d9261d9e"
+  "title": "OpenMoney v2.2.2",
+  "notes": "Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório,  >> Anteriores: melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, opção de zoom, ajustes na rotina de importação, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, Fluxo de Caixa dinâmico…",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.2.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.2.2",
+  "sha256": "d29c95a78d66cb2cc5b4428260b2a9e53f77d54d3fdd11cccbfb74e23018e305"
 }
