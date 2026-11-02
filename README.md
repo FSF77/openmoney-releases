@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.2.2** (Build 94)
-> *Publicada em: 02/11/2026 às 12:00*
+## ⚡ Última Versão Disponível: **v2.2.3** (Build 100)
+> *Publicada em: 02/11/2026 às 18:02*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.2.2.zip** | Pacote oficial v2.2.2 para macOS | [📥 Download v2.2.2](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.2.zip) | ~4 MB |
+| **OpenMoney-2.2.3.zip** | Pacote oficial v2.2.3 para macOS | [📥 Download v2.2.3](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.3.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-7fca5a1b4841a232aaccb60daa9148af80f27a11027c3ea6a41050de90713b5c  OpenMoney-2.2.2.zip
+e7aa7db675e1fd9279bcdbe4652a5a1aa56428482f97ba450f04691dee8f0cc0  OpenMoney-2.2.3.zip
 ```
 
 ### 📝 Notas desta Versão
-Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos >> Anteriores: melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, opção de zoom, ajustes na rotina de importação, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, Fluxo de Caixa dinâmico…
+Rotina para importar pastas com recibos digitalizados uso OCR local ou integração com Gemini IA, >> Anteriores: Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos, melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, opção de zoom, ajustes na rotina de importação, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, Fluxo de Caixa dinâmico…
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.2.2.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.2.zip).
+1. Baixe o pacote [OpenMoney-2.2.3.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.3.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
