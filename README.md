@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.2.2** (Build 93)
-> *Publicada em: 01/11/2026 às 22:37*
+## ⚡ Última Versão Disponível: **v2.2.2** (Build 94)
+> *Publicada em: 02/11/2026 às 12:00*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-d29c95a78d66cb2cc5b4428260b2a9e53f77d54d3fdd11cccbfb74e23018e305  OpenMoney-2.2.2.zip
+7fca5a1b4841a232aaccb60daa9148af80f27a11027c3ea6a41050de90713b5c  OpenMoney-2.2.2.zip
 ```
 
 ### 📝 Notas desta Versão
-Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório,  >> Anteriores: melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, opção de zoom, ajustes na rotina de importação, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, Fluxo de Caixa dinâmico…
+Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos >> Anteriores: melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, opção de zoom, ajustes na rotina de importação, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, Fluxo de Caixa dinâmico…
 
 ---
 
