@@ -1,10 +1,10 @@
 {
-  "version": "2.2.3",
-  "build": 104,
+  "version": "2.2.4",
+  "build": 105,
   "releaseDate": "2026-11-03",
-  "title": "OpenMoney v2.2.3",
-  "notes": "Rotina para importar pastas com recibos digitalizados uso OCR local ou integração com Gemini IA, >> Anteriores: Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos, melhorias e adequação do plano de auditoria realizado entre as versões Swift e Flutter, 100% das regras iguais, opção de zoom, ajustes na rotina de importação, opção de exportar csv na tela de lançamentos, inclusão de logo no cadastro de conta, Fluxo de Caixa dinâmico…",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.3.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.2.3",
-  "sha256": "e9019a696e6450308ce29e236ee016c97977e438338a21b6b62db1d7dd945776"
+  "title": "OpenMoney v2.2.4",
+  "notes": "Melhorias na visualização no card de patrimônio >> Anteriores: Rotina para importar pastas com recibos digitalizados uso OCR local ou integração com Gemini IA, Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos…",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.4.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.2.4",
+  "sha256": "617ca7c7e862efce335c0471a6dd9ba8b984e9b6c18ad9ceac853662f262e4c6"
 }
