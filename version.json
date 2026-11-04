@@ -1,10 +1,10 @@
 {
-  "version": "2.2.5",
-  "build": 107,
+  "version": "2.2.6",
+  "build": 109,
   "releaseDate": "2026-11-04",
-  "title": "OpenMoney v2.2.5",
-  "notes": "Bloqueio de categorias, sempre abrir a conta de crédito na fatura em aberto, melhorias na visualização no card de patrimônio >> Anteriores: Rotina para importar pastas com recibos digitalizados uso OCR local ou integração com Gemini IA, Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos…",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.5.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.2.5",
-  "sha256": "000eacdc17d0e94bae6b240a23f0cf760efe8d0b683d1ceadff657140fd45cd3"
+  "title": "OpenMoney v2.2.6",
+  "notes": "Ajuste regra abatimento, importar CSV carteira, bloqueio de categorias, sempre abrir a conta de crédito na fatura em aberto, melhorias na visualização no card de patrimônio >> Anteriores: Rotina para importar pastas com recibos digitalizados uso OCR local ou integração com Gemini IA, Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos…",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.6.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.2.6",
+  "sha256": "73a94370eb66648a0140c1b8101647a76abf46591ff0b33144a7b6e11af404ff"
 }
