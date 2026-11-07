@@ -1,10 +1,10 @@
 {
   "version": "2.3.0",
-  "build": 115,
+  "build": 117,
   "releaseDate": "2026-11-06",
   "title": "OpenMoney v2.3.0",
   "notes": "Liberado a opção para sincronização online, seus dados estão seguros com login e senha, uso de criptografia AES-256-GCM + PBKDF2, versão web em https://openmoney.app.br , aplicação e base hospedados na Cloudflare, é possível incluir comentários no fluxo na última linha (saldo final cumulado)",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.3.0",
-  "sha256": "699f90e0c25906a431c72581829e5f38cfcdf74776d4449f8857d4c67543ef06"
+  "sha256": "f34a20c7185c3f206fedc4a23d8c79f65afa3b7bd60c90f7a72b398d3898931b"
 }
