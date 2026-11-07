@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.3.0** (Build 117)
-> *Publicada em: 06/11/2026 às 23:44*
+## ⚡ Última Versão Disponível: **v2.3.0** (Build 119)
+> *Publicada em: 07/11/2026 às 00:04*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.3.0.zip** | Pacote oficial v2.3.0 para macOS | [📥 Download v2.3.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip) | ~5 MB |
+| **OpenMoney-2.3.0.zip** | Pacote oficial v2.3.0 para macOS | [📥 Download v2.3.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-f34a20c7185c3f206fedc4a23d8c79f65afa3b7bd60c90f7a72b398d3898931b  OpenMoney-2.3.0.zip
+0dbb46497dd512c50cea2412ad72ef92f28b17c2c6c35860c173380c67a77b3b  OpenMoney-2.3.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Liberado a opção para sincronização online, seus dados estão seguros com login e senha, uso de criptografia AES-256-GCM + PBKDF2, versão web em https://openmoney.app.br , aplicação e base hospedados na Cloudflare, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
+build com rollback sincronismo, disponível apenas na versão web em https://openmoney.app.br , melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
 
 ---
 
