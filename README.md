@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.2.7** (Build 110)
-> *Publicada em: 05/11/2026 às 22:44*
+## ⚡ Última Versão Disponível: **v2.3.0** (Build 115)
+> *Publicada em: 06/11/2026 às 21:22*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.2.7.zip** | Pacote oficial v2.2.7 para macOS | [📥 Download v2.2.7](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.7.zip) | ~4 MB |
+| **OpenMoney-2.3.0.zip** | Pacote oficial v2.3.0 para macOS | [📥 Download v2.3.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip) | ~5 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-97e0a6aba683e08606b07016dbadedb4cdd58aee22a283baa8582758c3f79412  OpenMoney-2.2.7.zip
+699f90e0c25906a431c72581829e5f38cfcdf74776d4449f8857d4c67543ef06  OpenMoney-2.3.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Melhorias visuais, ajuste regra abatimento, importar CSV carteira, bloqueio de categorias, sempre abrir a conta de crédito na fatura em aberto, melhorias na visualização no card de patrimônio >> Anteriores: Rotina para importar pastas com recibos digitalizados uso OCR local ou integração com Gemini IA, Melhorias visuais nas telas de lançamento e relatório, inclusão de filtro anual no relatório, Alterar nomes orçamento para limite de gastos…
+Liberado a opção para sincronização online, seus dados estão seguros com login e senha, uso de criptografia AES-256-GCM + PBKDF2, versão web em https://openmoney.app.br , aplicação e base hospedados na Cloudflare, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.2.7.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.2.7.zip).
+1. Baixe o pacote [OpenMoney-2.3.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
