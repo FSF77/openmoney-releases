@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.3.0** (Build 124)
-> *Publicada em: 08/11/2026 às 16:34*
+## ⚡ Última Versão Disponível: **v2.3.1** (Build 125)
+> *Publicada em: 08/11/2026 às 16:36*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.3.0.zip** | Pacote oficial v2.3.0 para macOS | [📥 Download v2.3.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip) | ~4 MB |
+| **OpenMoney-2.3.1.zip** | Pacote oficial v2.3.1 para macOS | [📥 Download v2.3.1](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.1.zip) | ~4 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-1937ecd8cafb6a03e2ee062797e86825a276ec8ddaa7283015178751a54b04f2  OpenMoney-2.3.0.zip
+3a4a993a2f820695652547c6b617c38fe56d0e917f62b63aa52bde0ad5a1278f  OpenMoney-2.3.1.zip
 ```
 
 ### 📝 Notas desta Versão
-build com rollback sincronismo, disponível apenas na versão web em https://openmoney.app.br , melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
+build com rollback sincronismo, disponível apenas na versão flutter e web em https://openmoney.app.br, melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.3.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.0.zip).
+1. Baixe o pacote [OpenMoney-2.3.1.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.1.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
