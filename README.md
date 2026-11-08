@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.3.1** (Build 127)
-> *Publicada em: 08/11/2026 às 20:19*
+## ⚡ Última Versão Disponível: **v2.3.1** (Build 128)
+> *Publicada em: 08/11/2026 às 20:47*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-eb6a1e6fe90e806243220cecea43e19c7da21df843ac62cf367aeebe657a1f2c  OpenMoney-2.3.1.zip
+2d804ad68998c2d8b1c85a46855cff7685a85b94bf433ab8e82ee7fb2139ff00  OpenMoney-2.3.1.zip
 ```
 
 ### 📝 Notas desta Versão
-build com rollback sincronismo, disponível apenas na versão flutter e web em https://openmoney.app.br, melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
+Persistência nativa de posição e tamanho de janela no macOS
 
 ---
 
