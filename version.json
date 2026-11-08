@@ -1,10 +1,10 @@
 {
   "version": "2.3.1",
-  "build": 128,
+  "build": 129,
   "releaseDate": "2026-11-08",
   "title": "OpenMoney v2.3.1",
-  "notes": "Persistência nativa de posição e tamanho de janela no macOS",
+  "notes": "build com rollback sincronismo, disponível apenas na versão flutter e web em https://openmoney.app.br, melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.1.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.3.1",
-  "sha256": "2d804ad68998c2d8b1c85a46855cff7685a85b94bf433ab8e82ee7fb2139ff00"
+  "sha256": "16e6e88fbf843eaa77d57f794f01789fc93a7f431a6923b8706f21e883eeb96f"
 }
