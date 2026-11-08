@@ -1,10 +1,10 @@
 {
   "version": "2.3.1",
-  "build": 126,
+  "build": 127,
   "releaseDate": "2026-11-08",
   "title": "OpenMoney v2.3.1",
   "notes": "build com rollback sincronismo, disponível apenas na versão flutter e web em https://openmoney.app.br, melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.1.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.3.1",
-  "sha256": "2aa8ce83651718391a4ea340a6234b3620a19ba34920f23174f0b7e3bc5cb249"
+  "sha256": "eb6a1e6fe90e806243220cecea43e19c7da21df843ac62cf367aeebe657a1f2c"
 }
