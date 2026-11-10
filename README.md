@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.4.0** (Build 143)
-> *Publicada em: 10/11/2026 às 14:26*
+## ⚡ Última Versão Disponível: **v2.4.0** (Build 144)
+> *Publicada em: 10/11/2026 às 14:28*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-9191041bf491d7935a6b9b843e610722e4cfbcf577f96b74c886a331937256ef  OpenMoney-2.4.0.zip
+37ad31ed5cd8d08996db2a13b49955bbce1d2d74f8025e7ea4b8d3600791aede  OpenMoney-2.4.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Personalização Visual e Temas, Novo Dashboard / Cockpit Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, pesquisa rápida (Cmd+K / Ctrl+K), tela de lançamentos consolidado, versão Flutter agora com sincronismo online, versão web em https://openmoney.app.br
+Personalização Visual e Temas, Novo Dashboard / Cockpit Central Customizável, Navegação Desktop Flexível, tela de lançamentos consolidado, versão Flutter agora com sincronismo online, versão web em https://openmoney.app.br
 
 ---
 
