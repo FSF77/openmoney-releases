@@ -1,10 +1,10 @@
 {
   "version": "2.4.0",
-  "build": 146,
+  "build": 148,
   "releaseDate": "2026-11-10",
   "title": "OpenMoney v2.4.0",
   "notes": "Personalização Visual e Temas, Novo Dashboard / Cockpit Central Customizável, Navegação Desktop Flexível, tela de lançamentos consolidado, versão Flutter agora com sincronismo online, versão web em https://openmoney.app.br",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.0.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.4.0",
-  "sha256": "45c2060f6be5b812e012fe751765b75462e8bde969ae7805e252191f829c6bb8"
+  "sha256": "d347e8b4da562a7c5be7d26df296b9aa7330cad528c4005e430daeb436f394db"
 }
