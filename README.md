@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.3.4** (Build 134)
-> *Publicada em: 10/11/2026 às 07:26*
+## ⚡ Última Versão Disponível: **v2.4.0** (Build 143)
+> *Publicada em: 10/11/2026 às 14:26*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.3.4.zip** | Pacote oficial v2.3.4 para macOS | [📥 Download v2.3.4](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.4.zip) | ~5 MB |
+| **OpenMoney-2.4.0.zip** | Pacote oficial v2.4.0 para macOS | [📥 Download v2.4.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.0.zip) | ~5 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-07a0b4776debc9e588f2af9efa227bd9582c8a7968a6d3b5b549e1d005b15757  OpenMoney-2.3.4.zip
+9191041bf491d7935a6b9b843e610722e4cfbcf577f96b74c886a331937256ef  OpenMoney-2.4.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Tela de lançamentos consolidado, ajustes gerais, build com rollback sincronismo, disponível apenas na versão flutter e web em https://openmoney.app.br, melhorias visuais, é possível incluir comentários no fluxo na última linha (saldo final cumulado)
+Personalização Visual e Temas, Novo Dashboard / Cockpit Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, pesquisa rápida (Cmd+K / Ctrl+K), tela de lançamentos consolidado, versão Flutter agora com sincronismo online, versão web em https://openmoney.app.br
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.3.4.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.3.4.zip).
+1. Baixe o pacote [OpenMoney-2.4.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.0.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
