@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.4.3** (Build 154)
-> *Publicada em: 11/11/2026 às 16:03*
+## ⚡ Última Versão Disponível: **v2.4.3** (Build 155)
+> *Publicada em: 11/11/2026 às 18:13*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,7 +14,7 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-db70e8b6b57701dfbf8b31f64b8238c7c4543c53288f414eb14eada5086adfc1  OpenMoney-2.4.3.zip
+d1903ac839d9485c1fed53bed0a4f515f6456e62e0902e0831695fcb9de2584e  OpenMoney-2.4.3.zip
 ```
 
 ### 📝 Notas desta Versão
