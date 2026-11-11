@@ -4,17 +4,17 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.4.2** (Build 153)
-> *Publicada em: 10/11/2026 às 22:56*
+## ⚡ Última Versão Disponível: **v2.4.3** (Build 154)
+> *Publicada em: 11/11/2026 às 16:03*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.4.2.zip** | Pacote oficial v2.4.2 para macOS | [📥 Download v2.4.2](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.2.zip) | ~5 MB |
+| **OpenMoney-2.4.3.zip** | Pacote oficial v2.4.3 para macOS | [📥 Download v2.4.3](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.3.zip) | ~5 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-1be691948303590f9b902f0ec62235ffeb7b02b172207f8af2ef9514beb1879f  OpenMoney-2.4.2.zip
+db70e8b6b57701dfbf8b31f64b8238c7c4543c53288f414eb14eada5086adfc1  OpenMoney-2.4.3.zip
 ```
 
 ### 📝 Notas desta Versão
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.4.2.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.2.zip).
+1. Baixe o pacote [OpenMoney-2.4.3.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.3.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
