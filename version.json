@@ -1,10 +1,10 @@
 {
-  "version": "2.4.3",
-  "build": 155,
-  "releaseDate": "2026-11-11",
-  "title": "OpenMoney v2.4.3",
-  "notes": "Agora com contas em outras moedas e cotação online (beta), personalização Visual e Temas, Novo Dashboard / Cockpit Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, tela de lançamentos consolidado, versão Flutter agora com sincronismo online, versão web em https://openmoney.app.br",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.3.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.4.3",
-  "sha256": "d1903ac839d9485c1fed53bed0a4f515f6456e62e0902e0831695fcb9de2584e"
+  "version": "2.4.4",
+  "build": 162,
+  "releaseDate": "2026-11-12",
+  "title": "OpenMoney v2.4.4",
+  "notes": "Agora com possibilidade de usar conta e sincronismo online, contas em outras moedas e cotação online (beta), personalização Visual e Temas, Novo Dashboard / Cockpit Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, tela de lançamentos consolidado, versão web em https://openmoney.app.br",
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.4.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.4.4",
+  "sha256": "b40005f4ef80d9558163a0d61662ce611dd41343caca0eb8fbe9956164b6b24a"
 }
