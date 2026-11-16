@@ -1,10 +1,10 @@
 {
-  "version": "2.4.7",
-  "build": 181,
-  "releaseDate": "2026-11-15",
-  "title": "OpenMoney v2.4.7",
+  "version": "2.4.8",
+  "build": 182,
+  "releaseDate": "2026-11-16",
+  "title": "OpenMoney v2.4.8",
   "notes": "Novo recurso para classificar os lançamentos por tags, tela de lançamentos gerais agora permite mais filtros e edição em lotes, ajustes tela lançamentos, parâmetro para ocultar barra de inserção rápida, melhorias rotina de incluir novos lançamentos/transferências, Nova tela para controle e acompanhamentos das previsões, limite de gasto agora pode ser usado para alertar quando está gastando mais que o definido, possibilidade de usar conta e sincronismo online, contas em outras moedas e cotação online (beta), personalização Visual e Temas, Novo Dashboard Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, tela de lançamentos consolidado, versão web em https://openmoney.app.br",
-  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.7.zip",
-  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.4.7",
-  "sha256": "dd8ec06517af6719e90552a4a0732300bb67e4571a6e36c45029576716856638"
+  "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.8.zip",
+  "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.4.8",
+  "sha256": "e3894e4e1764798047f6bb42e6d1ba6527cc34c8c21be2a32ff82e2c5237fc26"
 }
