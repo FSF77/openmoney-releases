@@ -1,10 +1,10 @@
 {
   "version": "2.5.0",
-  "build": 189,
+  "build": 190,
   "releaseDate": "2026-11-18",
   "title": "OpenMoney v2.5.0",
   "notes": "Importar extrato OFX para conciliação, Backup automático agora faz até 4 snapshots diários, melhorias e ajustes rotina de sincronismo desktop, novo recurso para classificar os lançamentos por tags, tela de lançamentos gerais agora permite mais filtros e edição em lotes, ajustes tela lançamentos, parâmetro para ocultar barra de inserção rápida, melhorias rotina de incluir novos lançamentos/transferências, Nova tela para controle e acompanhamentos das previsões, limite de gasto agora pode ser usado para alertar quando está gastando mais que o definido, conta online, contas em outras moedas, personalização Visual e Temas, Novo Dashboard, tela de lançamentos consolidado, versão web em https://openmoney.app.br",
   "downloadUrl": "https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.5.0.zip",
   "githubReleaseUrl": "https://github.com/FSF77/openmoney-releases/releases/tag/v2.5.0",
-  "sha256": "1647722e549b27de8e66dcdfebbb452aec1d9d44091d61b80d5c9fdbbd1fb49d"
+  "sha256": "68bbf872e7d00e7864bd8d37da22e48b0e3786899579732fa31e2ddbce765947"
 }
