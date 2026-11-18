@@ -4,21 +4,21 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.4.9** (Build 186)
-> *Publicada em: 16/11/2026 às 21:10*
+## ⚡ Última Versão Disponível: **v2.5.0** (Build 187)
+> *Publicada em: 17/11/2026 às 21:12*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
-| **OpenMoney-2.4.9.zip** | Pacote oficial v2.4.9 para macOS | [📥 Download v2.4.9](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.9.zip) | ~6 MB |
+| **OpenMoney-2.5.0.zip** | Pacote oficial v2.5.0 para macOS | [📥 Download v2.5.0](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.5.0.zip) | ~6 MB |
 | **version.json** | Feed de verificação automática | [🔍 Visualizar](https://raw.githubusercontent.com/FSF77/openmoney-releases/main/version.json) | < 1 KB |
 
 ### 🔐 Integridade (SHA256)
 ```
-9b58b10728ade7eb43b16f8aec4f918e2f3a2e976d0732374d31d60751d31dc3  OpenMoney-2.4.9.zip
+62d90dccda0ae05fb2685ef8c410ee69f1d2fd11e4ab0c911f3783a533bbe8ad  OpenMoney-2.5.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Melhorias e ajustes rotina de sincronismo desktop, novo recurso para classificar os lançamentos por tags, tela de lançamentos gerais agora permite mais filtros e edição em lotes, ajustes tela lançamentos, parâmetro para ocultar barra de inserção rápida, melhorias rotina de incluir novos lançamentos/transferências, Nova tela para controle e acompanhamentos das previsões, limite de gasto agora pode ser usado para alertar quando está gastando mais que o definido, possibilidade de usar conta e sincronismo online, contas em outras moedas e cotação online (beta), personalização Visual e Temas, Novo Dashboard Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, tela de lançamentos consolidado, versão web em https://openmoney.app.br
+Backup automático agora faz até 4 snapshots diários, melhorias e ajustes rotina de sincronismo desktop, novo recurso para classificar os lançamentos por tags, tela de lançamentos gerais agora permite mais filtros e edição em lotes, ajustes tela lançamentos, parâmetro para ocultar barra de inserção rápida, melhorias rotina de incluir novos lançamentos/transferências, Nova tela para controle e acompanhamentos das previsões, limite de gasto agora pode ser usado para alertar quando está gastando mais que o definido, possibilidade de usar conta e sincronismo online, contas em outras moedas e cotação online (beta), personalização Visual e Temas, Novo Dashboard Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, tela de lançamentos consolidado, versão web em https://openmoney.app.br
 
 ---
 
@@ -31,7 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/FSF77/openmoney-releases/main/insta
 ```
 
 ### Opção 2: Download Manual
-1. Baixe o pacote [OpenMoney-2.4.9.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.4.9.zip).
+1. Baixe o pacote [OpenMoney-2.5.0.zip](https://github.com/FSF77/openmoney-releases/raw/main/downloads/OpenMoney-2.5.0.zip).
 2. Dê dois cliques para descompactar o `OpenMoney.app`.
 3. Arraste para a pasta **/Applications**.
 4. **Se o macOS exibir o aviso:** *"OpenMoney está danificado e não pode ser aberto"*
