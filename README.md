@@ -4,8 +4,8 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ---
 
-## ⚡ Última Versão Disponível: **v2.5.0** (Build 187)
-> *Publicada em: 17/11/2026 às 21:12*
+## ⚡ Última Versão Disponível: **v2.5.0** (Build 189)
+> *Publicada em: 18/11/2026 às 07:53*
 
 | Arquivo | Descrição | Link Direto | Tamanho |
 | :--- | :--- | :--- | :--- |
@@ -14,11 +14,11 @@ Repositório público de distribuição e feed de atualização automática do *
 
 ### 🔐 Integridade (SHA256)
 ```
-62d90dccda0ae05fb2685ef8c410ee69f1d2fd11e4ab0c911f3783a533bbe8ad  OpenMoney-2.5.0.zip
+1647722e549b27de8e66dcdfebbb452aec1d9d44091d61b80d5c9fdbbd1fb49d  OpenMoney-2.5.0.zip
 ```
 
 ### 📝 Notas desta Versão
-Backup automático agora faz até 4 snapshots diários, melhorias e ajustes rotina de sincronismo desktop, novo recurso para classificar os lançamentos por tags, tela de lançamentos gerais agora permite mais filtros e edição em lotes, ajustes tela lançamentos, parâmetro para ocultar barra de inserção rápida, melhorias rotina de incluir novos lançamentos/transferências, Nova tela para controle e acompanhamentos das previsões, limite de gasto agora pode ser usado para alertar quando está gastando mais que o definido, possibilidade de usar conta e sincronismo online, contas em outras moedas e cotação online (beta), personalização Visual e Temas, Novo Dashboard Central Customizável, Navegação Desktop Flexível, Modo Tabela / Datagrid no Extrato, tela de lançamentos consolidado, versão web em https://openmoney.app.br
+Importar extrato OFX para conciliação, Backup automático agora faz até 4 snapshots diários, melhorias e ajustes rotina de sincronismo desktop, novo recurso para classificar os lançamentos por tags, tela de lançamentos gerais agora permite mais filtros e edição em lotes, ajustes tela lançamentos, parâmetro para ocultar barra de inserção rápida, melhorias rotina de incluir novos lançamentos/transferências, Nova tela para controle e acompanhamentos das previsões, limite de gasto agora pode ser usado para alertar quando está gastando mais que o definido, conta online, contas em outras moedas, personalização Visual e Temas, Novo Dashboard, tela de lançamentos consolidado, versão web em https://openmoney.app.br
 
 ---
 
